@@ -15,17 +15,27 @@ You should have received a copy of the GNU General Public License
 long with this program. If not, see <https://www.gnu.org/licenses/>."""
 
 from .creature import Creature
+import random
 
 class World:
 	def __init__(self):
-		self.size = [100.0, 100.0]
+		self.size = [10.0, 10.0]
 		self.creatures = []
 
 	def generate_creatures(self, number):
 		for i in range(number):
 			creature = Creature(self)
+			creature.position = self._generate_position()
 
 			self.creatures.append(creature)
+
+	def _generate_position(self):
+		position = [random.random()*self.size[0], random.random()*self.size[1], 0.0]
+
+		while self.collision(position):
+			position = [random.random()*self.size[0], random.random()*self.size[1], 0.0]
+
+		return position
 
 	def update_creatures(self):
 		for creature in self.creatures:
