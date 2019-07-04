@@ -32,8 +32,14 @@ Has position dependant properties.
 Terrain hight can be added.
 Has information about time of day / weather / daylight...
 
+The world basically serves as the state of the simulation.
+Everything lives inside of the world.
+
 ## Loop
 Day night cycle.
 Maybe season cycle later.
 Runs with time steps. (Standard time step = 1h)
 Update every time step.
+
+## Engine
+PyGame seems like a reasonable choice.
