@@ -21,6 +21,7 @@ class World:
 	def __init__(self):
 		self.size = [10.0, 10.0]
 		self.creatures = []
+		self.food = []
 
 	def generate_creatures(self, number):
 		for i in range(number):
@@ -46,3 +47,16 @@ class World:
 			return False
 		else:
 			return True
+
+	def generate_food(self, number):
+		for i in range(number):
+			food = Food()
+			food.position = self._generate_position()
+
+			self.food.append(food)
+
+class Food:
+	def __init__(self):
+		self.eaten = False
+		self.energy = 1.0
+		self.position = [0.0, 0.0, 0.0]
