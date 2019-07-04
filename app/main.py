@@ -18,13 +18,18 @@ def main():
 	print("Creatures created. Number  = ", len(wrld.creatures))
 	print(80*"-")
 
+	wrld.generate_food(10)
+
+	print("Food created. Number  = ", len(wrld.food))
+	print(80*"-")
+
 	print_world(wrld)
 
-	for i in range(10):
+	"""for i in range(10):
 		wrld.update_creatures()
 
 		print_world(wrld)
-		sleep(0.1)
+		sleep(0.1)"""
 
 def print_world(wrld):
 	prt = []
@@ -39,6 +44,9 @@ def print_world(wrld):
 
 	for creature in wrld.creatures:
 		prt[int(creature.position[1])][int(creature.position[0])] = "X"
+
+	for food in wrld.food:
+		prt[int(food.position[1])][int(food.position[0])] = "O"
 
 	system('clear')
 
