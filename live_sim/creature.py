@@ -14,6 +14,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 long with this program. If not, see <https://www.gnu.org/licenses/>."""
 
+import random
+import math
+
 class Creature:
 	"""Docstring for creaure class"""
 
@@ -21,13 +24,20 @@ class Creature:
 		self.state = State()
 		self.world = world
 		self.energy = 1.0
+		self.speed = 1.0
 		self.position = [0.0, 0.0, 0.0]
 
 	def update(self):
 		self._check_if_has_died()
-		self._repoduce()
-		self._consume_energy()
-		self._move()
+
+		if self.state.reproducing:
+			self._repoduce()
+
+		if self.state.consuming:
+			self._consume_energy()
+
+		if self.state.moving:
+			self._move()
 
 	def _check_if_has_died(self):
 		"""Checks if the creature died to some cicumstances"""
@@ -40,7 +50,18 @@ class Creature:
 		pass
 
 	def _move(self):
-		pass
+		position_new = self._get_new_pos()
+
+		while self.world.collision(position_new):
+			position_new = self._get_new_pos()
+
+		self.position = position_new
+
+	def _get_new_pos(self):
+		degree = 2.0*random.random()*math.pi
+		pos_diff = [self.speed*math.sin(degree), self.speed*math.cos(degree), 0.0]
+
+		return [self.position[0] + pos_diff[0], self.position[1] + pos_diff[1], self.position[2] + pos_diff[2]]
 
 class State:
 	"""Base state class representing the state of the creature"""

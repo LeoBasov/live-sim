@@ -27,6 +27,10 @@ class World:
 
 			self.creatures.append(creature)
 
+	def update_creatures(self):
+		for creature in self.creatures:
+			creature.update()
+
 	def collision(self, position):
 		if position[0] < self.size[0] and position[0] > 0 and position[1] < self.size[1] and position[1] > 0:
 			return False
