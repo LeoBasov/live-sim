@@ -16,6 +16,7 @@ long with this program. If not, see <https://www.gnu.org/licenses/>."""
 
 from .creature import Creature
 import random
+import math
 
 class World:
 	def __init__(self):
@@ -27,15 +28,36 @@ class World:
 	def generate_creatures(self, number):
 		for i in range(number):
 			creature = Creature(self)
-			creature.position = self._generate_position()
+			creature.position = self._generate_position_on_border()
 
 			self.creatures.append(creature)
 
-	def _generate_position(self):
+	def _generate_random_position(self):
 		position = [random.random()*self.size[0], random.random()*self.size[1], 0.0]
 
 		while self.collision(position):
 			position = [random.random()*self.size[0], random.random()*self.size[1], 0.0]
+
+		return position
+
+	def _generate_position_on_border(self):
+		position = [0.0, 0.0, 0.0]
+		i = math.ceil(random.random()*4.0)
+
+		if i == 1:
+			position[0] = 0.0
+			position[1] = random.random()*self.size[1]
+		elif i == 2:
+			position[0] = self.size[0]
+			position[1] = random.random()*self.size[1]
+		elif i == 3:
+			position[0] = random.random()*self.size[0]
+			position[1] = 0.0
+		elif i == 4:
+			position[0] = random.random()*self.size[0]
+			position[1] = self.size[1]
+
+		print(i, position)
 
 		return position
 
@@ -62,7 +84,7 @@ class World:
 	def generate_food(self, number):
 		for i in range(number):
 			food = Food()
-			food.position = self._generate_position()
+			food.position = self._generate_random_position()
 
 			self.food.append(food)
 

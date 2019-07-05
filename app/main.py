@@ -6,6 +6,7 @@ sys.path.append('../.')
 from live_sim.world import World
 from os import system
 from time import sleep
+import math
 
 def main():
 	wrld = World()
@@ -43,10 +44,16 @@ def print_world(wrld):
 		prt.append(prt_loc)
 
 	for creature in wrld.creatures:
-		prt[int(creature.position[1])][int(creature.position[0])] = "X"
+		x = math.ceil(creature.position[0]) - 1
+		y = math.ceil(creature.position[1]) - 1
+
+		prt[y][x] = "X"
 
 	for food in wrld.food:
-		prt[int(food.position[1])][int(food.position[0])] = "O"
+		x = int(food.position[0])
+		y = int(food.position[1])
+
+		prt[y][x] = "O"
 
 	system('clear')
 
