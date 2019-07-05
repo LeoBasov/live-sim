@@ -25,11 +25,11 @@ def main():
 
 	print_world(wrld)
 
-	"""for i in range(10):
-		wrld.update_creatures()
+	for i in range(10):
+		wrld.update()
 
 		print_world(wrld)
-		sleep(0.1)"""
+		sleep(0.2)
 
 def print_world(wrld):
 	prt = []
@@ -49,6 +49,8 @@ def print_world(wrld):
 		prt[int(food.position[1])][int(food.position[0])] = "O"
 
 	system('clear')
+
+	print("time of day:", wrld.time, "o'clock")
 
 	for val in prt:
 		print(val)

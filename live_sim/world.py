@@ -22,6 +22,7 @@ class World:
 		self.size = [10.0, 10.0]
 		self.creatures = []
 		self.food = []
+		self.time = 0
 
 	def generate_creatures(self, number):
 		for i in range(number):
@@ -38,7 +39,17 @@ class World:
 
 		return position
 
-	def update_creatures(self):
+	def update(self):
+		self._update_creatures()
+		self._update_time()
+
+	def _update_time(self):
+		self.time += 1
+
+		if self.time == 24:
+			self.time = 0
+
+	def _update_creatures(self):
 		for creature in self.creatures:
 			creature.update()
 

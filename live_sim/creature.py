@@ -25,6 +25,7 @@ class Creature:
 		self.world = world
 		self.energy = 1.0
 		self.speed = 1.0
+		self.sense = 1.0
 		self.position = [0.0, 0.0, 0.0]
 
 	def update(self):
