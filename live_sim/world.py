@@ -57,8 +57,6 @@ class World:
 			position[0] = random.random()*self.size[0]
 			position[1] = self.size[1]
 
-		print(i, position)
-
 		return position
 
 	def update(self):
