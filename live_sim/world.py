@@ -17,6 +17,7 @@ long with this program. If not, see <https://www.gnu.org/licenses/>."""
 from .creature import Creature
 import random
 import math
+import numpy as np
 
 class World:
 	def __init__(self):
@@ -33,15 +34,15 @@ class World:
 			self.creatures.append(creature)
 
 	def _generate_random_position(self):
-		position = [random.random()*self.size[0], random.random()*self.size[1], 0.0]
+		position = np.array([random.random()*self.size[0], random.random()*self.size[1], 0.0])
 
 		while self.collision(position):
-			position = [random.random()*self.size[0], random.random()*self.size[1], 0.0]
+			position = np.array([random.random()*self.size[0], random.random()*self.size[1], 0.0])
 
 		return position
 
 	def _generate_position_on_border(self):
-		position = [0.0, 0.0, 0.0]
+		position = np.array([0.0, 0.0, 0.0])
 		i = math.ceil(random.random()*4.0)
 
 		if i == 1:
@@ -90,4 +91,4 @@ class Food:
 	def __init__(self):
 		self.eaten = False
 		self.energy = 1.0
-		self.position = [0.0, 0.0, 0.0]
+		self.position = np.array([0.0, 0.0, 0.0])

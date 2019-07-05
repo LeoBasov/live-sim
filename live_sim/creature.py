@@ -16,6 +16,7 @@ long with this program. If not, see <https://www.gnu.org/licenses/>."""
 
 import random
 import math
+import numpy as np
 
 class Creature:
 	"""Docstring for creaure class"""
@@ -26,7 +27,7 @@ class Creature:
 		self.energy = 1.0
 		self.speed = 1.0
 		self.sense = 1.0
-		self.position = [0.0, 0.0, 0.0]
+		self.position = np.array([0.0, 0.0, 0.0])
 
 	def update(self):
 		self._check_if_has_died()
@@ -51,18 +52,22 @@ class Creature:
 		pass
 
 	def _move(self):
-		position_new = self._get_new_pos()
+		self.position = self._get_new_pos_random()
+
+	def _find_food(self):
+		pass
+
+	def _get_new_pos_random(self):
+		degree = 2.0*random.random()*math.pi
+		pos_diff = np.array([self.speed*math.sin(degree), self.speed*math.cos(degree), 0.0])
+		position_new =  self.position + pos_diff
 
 		while self.world.collision(position_new):
-			position_new = self._get_new_pos()
+			degree = 2.0*random.random()*math.pi
+			pos_diff = np.array([self.speed*math.sin(degree), self.speed*math.cos(degree), 0.0])
+			position_new =  self.position + pos_diff
 
-		self.position = position_new
-
-	def _get_new_pos(self):
-		degree = 2.0*random.random()*math.pi
-		pos_diff = [self.speed*math.sin(degree), self.speed*math.cos(degree), 0.0]
-
-		return [self.position[0] + pos_diff[0], self.position[1] + pos_diff[1], self.position[2] + pos_diff[2]]
+		return position_new
 
 class State:
 	"""Base state class representing the state of the creature"""
