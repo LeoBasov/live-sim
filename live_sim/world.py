@@ -63,6 +63,7 @@ class World:
 	def update(self):
 		self._update_creatures()
 		self._update_time()
+		self._remove_entities()
 
 	def _update_time(self):
 		self.time += 1
@@ -73,6 +74,15 @@ class World:
 	def _update_creatures(self):
 		for creature in self.creatures:
 			creature.update()
+
+	def _remove_entities(self):
+		left_food = []
+
+		for food in self.food:
+			if not food.eaten:
+				left_food.append(food)
+
+		self.food = left_food
 
 	def collision(self, position):
 		if position[0] < self.size[0] and position[0] > 0 and position[1] < self.size[1] and position[1] > 0:

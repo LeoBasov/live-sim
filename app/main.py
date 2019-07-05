@@ -26,11 +26,11 @@ def main():
 
 	print_world(wrld)
 
-	for i in range(10):
+	for i in range(25):
 		wrld.update()
 
 		print_world(wrld)
-		sleep(0.2)
+		sleep(0.1)
 
 def print_world(wrld):
 	prt = []
@@ -61,6 +61,9 @@ def print_world(wrld):
 
 	for val in prt:
 		print(val)
+
+	print("Creatures", len(wrld.creatures))
+	print("food", len(wrld.food))
 
 if __name__ == "__main__":
 	main()

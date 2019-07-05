@@ -17,6 +17,7 @@ long with this program. If not, see <https://www.gnu.org/licenses/>."""
 import random
 import math
 import numpy as np
+import sys
 
 class Creature:
 	"""Docstring for creaure class"""
@@ -52,10 +53,38 @@ class Creature:
 		pass
 
 	def _move(self):
-		self.position = self._get_new_pos_random()
+		dist = self._find_food()
+
+		if dist[1] == None:
+			self.position = self._get_new_pos_random()
+		else:
+			dist_vec = dist[1].position - self.position
+			dist_scal = np.linalg.norm(dist_vec)
+			speed = min(dist_scal, self.speed)
+			
+			if dist_scal > 0.0:
+				self.position = self.position + (speed/dist_scal)*dist_vec
+
+			if(speed < 0.5*self.speed):
+				self._eat(dist[1])
+
+	def _eat(self, food):
+		self.energy += food.energy
+		food.eaten = True
 
 	def _find_food(self):
-		pass
+		dist = [sys.float_info.max, None]
+
+		for food in self.world.food:
+			dist_new = np.linalg.norm(self.position - food.position)
+
+			if dist_new <= self.sense:
+				dist[0] =  dist_new
+				dist[1] = food
+
+				break
+
+		return dist
 
 	def _get_new_pos_random(self):
 		degree = 2.0*random.random()*math.pi
