@@ -30,6 +30,7 @@ class Creature:
 		self.speed = 1.0
 		self.sense = 1.0
 		self.position = np.array([0.0, 0.0, 0.0])
+		self.reproduction_threshold = 0.0
 
 	def copy(self, other):
 		self.state = other.state
@@ -51,11 +52,13 @@ class Creature:
 			self._move()
 
 	def _repoduce(self):
-		if self.energy > self.energy_init:
+		if self.energy > (self.energy_init + self.energy_init * self.reproduction_threshold):
+			self.energy *= 0.5
+
 			creature = Creature(self.world)
 
 			creature.copy(self)
-			creature.energy = creature.energy_init
+			creature.energy = self.energy_init
 
 			self.world.creatures.append(creature)
 
