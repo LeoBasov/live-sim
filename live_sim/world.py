@@ -21,7 +21,7 @@ import numpy as np
 
 class World:
 	def __init__(self):
-		self.size = [10.0, 10.0]
+		self.size = [20.0, 20.0]
 		self.creatures = []
 		self.food = []
 		self.time = 0
@@ -76,6 +76,10 @@ class World:
 			creature.update()
 
 	def _remove_entities(self):
+		self._remove_food()
+		self._remove_creatures()	
+
+	def _remove_food(self):
 		left_food = []
 
 		for food in self.food:
@@ -83,6 +87,15 @@ class World:
 				left_food.append(food)
 
 		self.food = left_food
+
+	def _remove_creatures(self):
+		left_creatures = []
+
+		for creature in self.creatures:
+			if creature.state.alive:
+				left_creatures.append(creature)
+
+		self.creatures = left_creatures
 
 	def collision(self, position):
 		if position[0] < self.size[0] and position[0] > 0 and position[1] < self.size[1] and position[1] > 0:
@@ -100,5 +113,5 @@ class World:
 class Food:
 	def __init__(self):
 		self.eaten = False
-		self.energy = 1.0
+		self.energy = 5.0
 		self.position = np.array([0.0, 0.0, 0.0])
