@@ -19,7 +19,7 @@ def main():
 	print("Creatures created. Number  = ", len(wrld.creatures))
 	print(80*"-")
 
-	wrld.generate_food(10)
+	wrld.generate_food(20)
 
 	print("Food created. Number  = ", len(wrld.food))
 	print(80*"-")
@@ -31,6 +31,9 @@ def main():
 
 		print_world(wrld)
 		sleep(0.1)
+
+		if not len(wrld.creatures):
+			break
 
 def print_world(wrld):
 	prt = []
