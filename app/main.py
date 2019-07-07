@@ -17,7 +17,7 @@ def main():
 		wrld = World()
 		creature_number = 5
 		food_number = 100
-		number_cycles = 20
+		number_cycles = 50
 
 		print("World created")
 		print(80*"-")
@@ -54,7 +54,7 @@ def main():
 				break
 
 def print_world(wrld, cycle):
-	prt = []
+	"""prt = []
 
 	for i in range(int(wrld.size[1])):
 		prt_loc = []
@@ -74,15 +74,15 @@ def print_world(wrld, cycle):
 		x = int(food.position[0])
 		y = int(food.position[1])
 
-		prt[y][x] = "O"
+		prt[y][x] = "O"""
 
 	system('clear')
 
 	print("Cycle number:", cycle)
 	print("Time of day:", wrld.time, "o'clock")
 
-	for val in prt:
-		print(val)
+	"""for val in prt:
+		print(val)"""
 
 	print("Creatures", len(wrld.creatures))
 	print("food", len(wrld.food))
