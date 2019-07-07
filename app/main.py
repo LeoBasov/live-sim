@@ -11,8 +11,8 @@ import math
 def main():
 	wrld = World()
 	creature_number = 5
-	food_number = 30
-	number_cycles = 3
+	food_number = 40
+	number_cycles = 10
 
 	print("World created")
 	print(80*"-")
@@ -30,6 +30,9 @@ def main():
 	print_world(wrld, 0)
 
 	for j in range(number_cycles):
+		for creature in wrld.creatures:
+			creature.energy = creature.energy_init
+
 		for i in range(24):
 			wrld.update()
 
