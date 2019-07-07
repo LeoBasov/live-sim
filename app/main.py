@@ -7,45 +7,51 @@ from live_sim.world import World
 from os import system
 from time import sleep
 import math
+import csv
 
 def main():
-	wrld = World()
-	creature_number = 5
-	food_number = 40
-	number_cycles = 10
+	with open('numbers.csv', '+w', newline='') as csvfile:
+		number_writer = csv.writer(csvfile, delimiter=',')
 
-	print("World created")
-	print(80*"-")
 
-	wrld.generate_creatures(creature_number)
+		wrld = World()
+		creature_number = 5
+		food_number = 20
+		number_cycles = 10
 
-	print("Creatures created. Number  = ", len(wrld.creatures))
-	print(80*"-")
+		print("World created")
+		print(80*"-")
 
-	wrld.generate_food(food_number)
+		wrld.generate_creatures(creature_number)
 
-	print("Food created. Number  = ", len(wrld.food))
-	print(80*"-")
+		print("Creatures created. Number  = ", len(wrld.creatures))
+		print(80*"-")
 
-	print_world(wrld, 0)
+		wrld.generate_food(food_number)
 
-	for j in range(number_cycles):
-		for creature in wrld.creatures:
-			creature.energy = creature.energy_init
+		print("Food created. Number  = ", len(wrld.food))
+		print(80*"-")
 
-		for i in range(24):
-			wrld.update()
+		print_world(wrld, 0)
 
-			print_world(wrld, j + 1)
-			sleep(0.1)
+		for j in range(number_cycles):
+			for creature in wrld.creatures:
+				creature.energy = creature.energy_init
+
+			for i in range(24):
+				number_writer.writerow([len(wrld.creatures), len(wrld.food)])
+				wrld.update()
+
+				print_world(wrld, j + 1)
+				sleep(0.1)
+
+				if not len(wrld.creatures):
+					break
+
+				if wrld.time == 0:
+					wrld.generate_food(food_number)
 
 			if not len(wrld.creatures):
-				break
-
-			if wrld.time == 0:
-				wrld.generate_food(food_number)
-
-		if not len(wrld.creatures):
 				break
 
 def print_world(wrld, cycle):
