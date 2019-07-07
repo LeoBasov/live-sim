@@ -17,7 +17,7 @@ def main():
 		wrld = World()
 		creature_number = 5
 		food_number = 100
-		number_cycles = 10
+		number_cycles = 20
 
 		print("World created")
 		print(80*"-")
@@ -89,13 +89,16 @@ def print_world(wrld, cycle):
 
 def write_state(name, cycle, wrld):
 	speeds = []
+	senses = []
 
 	for creature in wrld.creatures:
 		speeds.append(creature.speed)
+		senses.append(creature.sense)
 
 	with open(name + str(cycle + 1) + '.csv', '+w', newline='') as csvfile:
 		state_writer = csv.writer(csvfile, delimiter=',')
 		state_writer.writerow(speeds)
+		state_writer.writerow(senses)
 
 if __name__ == "__main__":
 	main()
