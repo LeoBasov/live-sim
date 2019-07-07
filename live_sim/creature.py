@@ -25,7 +25,7 @@ class Creature:
 	def __init__(self, world):
 		self.state = State()
 		self.world = world
-		self.energy = 1.0
+		self.energy = 10.0
 		self.speed = 1.0
 		self.sense = 1.0
 		self.position = np.array([0.0, 0.0, 0.0])
@@ -50,7 +50,10 @@ class Creature:
 		pass
 
 	def _consume_energy(self):
-		pass
+		self.energy -= self.speed*self.speed
+
+		if self.energy <= 0.0:
+			self.state = Dead()
 
 	def _move(self):
 		dist = self._find_food()
@@ -106,3 +109,10 @@ class State:
 		self.reproducing = True
 		self.consuming = True
 		self.moving = True
+
+class Dead(State):
+	"""docstring for Dead"""
+	def __init__(self):
+		super().__init__()
+
+		self.alive = False	
