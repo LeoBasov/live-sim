@@ -25,14 +25,22 @@ class Creature:
 	def __init__(self, world):
 		self.state = State()
 		self.world = world
-		self.energy = 10.0
+		self.energy_init = 10.0
+		self.energy = self.energy_init
 		self.speed = 1.0
 		self.sense = 1.0
 		self.position = np.array([0.0, 0.0, 0.0])
 
-	def update(self):
-		self._check_if_has_died()
+	def copy(self, other):
+		self.state = other.state
+		self.world = other.world 
+		self.energy_init = other.energy_init
+		self.energy = other.energy
+		self.speed = other.speed
+		self.sense = other.sense
+		self.position = other.position
 
+	def update(self):
 		if self.state.reproducing:
 			self._repoduce()
 
@@ -42,12 +50,14 @@ class Creature:
 		if self.state.moving:
 			self._move()
 
-	def _check_if_has_died(self):
-		"""Checks if the creature died to some cicumstances"""
-		pass
-
 	def _repoduce(self):
-		pass
+		if self.energy > self.energy_init:
+			creature = Creature(self.world)
+
+			creature.copy(self)
+			creature.energy = creature.energy_init
+
+			self.world.creatures.append(creature)
 
 	def _consume_energy(self):
 		self.energy -= self.speed*self.speed
@@ -115,4 +125,8 @@ class Dead(State):
 	def __init__(self):
 		super().__init__()
 
-		self.alive = False	
+		self.name  = "dead"
+		self.alive = False
+		self.reproducing = False
+		self.consuming = False
+		self.moving = False
