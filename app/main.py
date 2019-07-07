@@ -10,32 +10,42 @@ import math
 
 def main():
 	wrld = World()
+	creature_number = 5
+	food_number = 30
+	number_cycles = 3
 
 	print("World created")
 	print(80*"-")
 
-	wrld.generate_creatures(10)
+	wrld.generate_creatures(creature_number)
 
 	print("Creatures created. Number  = ", len(wrld.creatures))
 	print(80*"-")
 
-	wrld.generate_food(20)
+	wrld.generate_food(food_number)
 
 	print("Food created. Number  = ", len(wrld.food))
 	print(80*"-")
 
-	print_world(wrld)
+	print_world(wrld, 0)
 
-	for i in range(25):
-		wrld.update()
+	for j in range(number_cycles):
+		for i in range(24):
+			wrld.update()
 
-		print_world(wrld)
-		sleep(0.1)
+			print_world(wrld, j + 1)
+			sleep(0.1)
+
+			if not len(wrld.creatures):
+				break
+
+			if wrld.time == 0:
+				wrld.generate_food(food_number)
 
 		if not len(wrld.creatures):
-			break
+				break
 
-def print_world(wrld):
+def print_world(wrld, cycle):
 	prt = []
 
 	for i in range(int(wrld.size[1])):
@@ -60,7 +70,8 @@ def print_world(wrld):
 
 	system('clear')
 
-	print("time of day:", wrld.time, "o'clock")
+	print("Cycle number:", cycle)
+	print("Time of day:", wrld.time, "o'clock")
 
 	for val in prt:
 		print(val)
