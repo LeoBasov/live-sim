@@ -16,8 +16,8 @@ def main():
 
 		wrld = World()
 		creature_number = 5
-		food_number = 20
-		number_cycles = 2
+		food_number = 100
+		number_cycles = 10
 
 		print("World created")
 		print(80*"-")
@@ -36,9 +36,6 @@ def main():
 
 		for j in range(number_cycles):
 			write_state("sate_", j, wrld)
-
-			for creature in wrld.creatures:
-				creature.energy = creature.energy_init
 
 			for i in range(24):
 				number_writer.writerow([len(wrld.creatures), len(wrld.food)])
