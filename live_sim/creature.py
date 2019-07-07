@@ -60,7 +60,15 @@ class Creature:
 			creature.copy(self)
 			creature.energy = self.energy_init
 
+			self._mutate(creature)
+
 			self.world.creatures.append(creature)
+
+	def _mutate(self, creature):
+		self._mutate_speed(creature)
+
+	def _mutate_speed(self, creature):
+		creature.speed = (1.1 - 0.2*random.random())*creature.speed
 
 	def _consume_energy(self):
 		self.energy -= self.speed*self.speed
