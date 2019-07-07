@@ -66,9 +66,13 @@ class Creature:
 
 	def _mutate(self, creature):
 		self._mutate_speed(creature)
+		self._mutate_sense(creature)
 
 	def _mutate_speed(self, creature):
 		creature.speed = (1.1 - 0.2*random.random())*creature.speed
+
+	def _mutate_sense(self, creature):
+		creature.sense = (1.1 - 0.2*random.random())*creature.sense
 
 	def _consume_energy(self):
 		self.energy -= self.speed*self.speed
