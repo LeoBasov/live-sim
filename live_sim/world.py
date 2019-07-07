@@ -29,7 +29,7 @@ class World:
 	def generate_creatures(self, number):
 		for i in range(number):
 			creature = Creature(self)
-			creature.position = self._generate_position_on_border()
+			creature.position = self._generate_random_position()
 
 			self.creatures.append(creature)
 
