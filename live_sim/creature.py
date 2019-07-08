@@ -106,11 +106,9 @@ class Creature:
 		for food in self.world.food:
 			dist_new = np.linalg.norm(self.position - food.position)
 
-			if dist_new <= self.sense:
+			if (dist_new <= self.sense) and (dist_new < dist[0]):
 				dist[0] =  dist_new
 				dist[1] = food
-
-				break
 
 		return dist
 
