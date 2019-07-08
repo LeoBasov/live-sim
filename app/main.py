@@ -18,6 +18,7 @@ def main():
 		creature_number = 100
 		creature_sense = 3.5
 		creature_speed = 0.16
+		creature_size = 1.0
 
 		food_number = 10
 		number_cycles = 100
@@ -25,7 +26,7 @@ def main():
 		print("World created")
 		print(80*"-")
 
-		wrld.generate_creatures(creature_number, creature_sense, creature_speed)
+		wrld.generate_creatures(creature_number, creature_sense, creature_speed, creature_size)
 
 		print("Creatures created. Number  = ", len(wrld.creatures))
 		print(80*"-")
