@@ -13,16 +13,19 @@ def main():
 	with open('numbers.csv', '+w', newline='') as csvfile:
 		number_writer = csv.writer(csvfile, delimiter=',')
 
-
 		wrld = World()
-		creature_number = 5
+
+		creature_number = 900
+		creature_sense = 0.894
+		creature_speed = 0.2121
+
 		food_number = 100
-		number_cycles = 50
+		number_cycles = 100
 
 		print("World created")
 		print(80*"-")
 
-		wrld.generate_creatures(creature_number)
+		wrld.generate_creatures(creature_number, creature_sense, creature_speed)
 
 		print("Creatures created. Number  = ", len(wrld.creatures))
 		print(80*"-")
