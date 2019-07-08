@@ -15,11 +15,11 @@ def main():
 
 		wrld = World()
 
-		creature_number = 900
-		creature_sense = 0.894
-		creature_speed = 0.2121
+		creature_number = 100
+		creature_sense = 3.5
+		creature_speed = 0.16
 
-		food_number = 100
+		food_number = 10
 		number_cycles = 100
 
 		print("World created")

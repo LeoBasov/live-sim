@@ -29,8 +29,8 @@ class World:
 	def generate_creatures(self, number, sense = 1.0, speed = 1.0):
 		for i in range(number):
 			creature = Creature(self)
-			creature.sense = sense
-			creature.speed = speed
+			creature.sense = (0.001 + 10.0*random.random())*sense
+			creature.speed = (0.001 + 10.0*random.random())*speed
 			creature.position = self._generate_random_position()
 
 			self.creatures.append(creature)
