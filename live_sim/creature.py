@@ -29,6 +29,7 @@ class Creature:
 		self.energy = self.energy_init
 		self.speed = 1.0
 		self.sense = 1.0
+		self.size = 1.0
 		self.position = np.array([0.0, 0.0, 0.0])
 		self.reproduction_threshold = 0.0
 
@@ -39,6 +40,7 @@ class Creature:
 		self.energy = other.energy
 		self.speed = other.speed
 		self.sense = other.sense
+		self.size = other.size
 		self.position = other.position
 
 	def reproduce(self):
@@ -87,7 +89,7 @@ class Creature:
 		creature.sense = (1.1 - 0.2*random.random())*creature.sense
 
 	def _consume_energy(self):
-		self.energy -= self.speed*self.speed
+		self.energy -= self.speed*self.speed*self.size*self.size*self.size
 
 		if self.energy <= 0.0:
 			self.state = Dead()
