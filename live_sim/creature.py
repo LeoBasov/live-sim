@@ -55,6 +55,33 @@ class Creature:
 		if self.state.moving:
 			self._move()
 
+	def fight(self):
+		if self.state.fighting:
+			self._fight()
+
+	def _fight(self):
+		dist = self._find_enemy()
+
+		if dist[1] != None:
+			if dist[1].size > self.size:
+				self.state = Dead()
+			elif dist[1].size < self.size:
+				dist[1].state = Dead()
+
+	def _find_enemy(self):
+		dist = [sys.float_info.max, None]
+
+		for creaure in self.world.creatures:
+			if creaure.state.alive == True:
+
+				dist_new = np.linalg.norm(self.position - creaure.position)
+
+				if (dist_new <= self.sense) and (dist_new <= 0.5*self.speed) and (dist_new < dist[0]):
+					dist[0] =  dist_new
+					dist[1] = creaure
+
+		return dist
+
 	def update(self):
 		if self.state.reproducing:
 			self._repoduce()
@@ -146,6 +173,7 @@ class State:
 		self.reproducing = True
 		self.consuming = True
 		self.moving = True
+		self.fighting = True
 
 class Dead(State):
 	"""docstring for Dead"""
@@ -157,3 +185,4 @@ class Dead(State):
 		self.reproducing = False
 		self.consuming = False
 		self.moving = False
+		self.fighting = False

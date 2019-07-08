@@ -77,6 +77,7 @@ class World:
 		for creature in self.creatures:
 			creature.move()
 			creature.consume_energy()
+			creature.fight()
 
 		for creature in self.creatures:
 			creature.reproduce()
