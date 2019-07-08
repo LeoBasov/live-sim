@@ -93,15 +93,18 @@ def print_world(wrld, cycle):
 def write_state(name, cycle, wrld):
 	speeds = []
 	senses = []
+	sizes = []
 
 	for creature in wrld.creatures:
 		speeds.append(creature.speed)
 		senses.append(creature.sense)
+		sizes.append(creature.size)
 
 	with open(name + str(cycle + 1) + '.csv', '+w', newline='') as csvfile:
 		state_writer = csv.writer(csvfile, delimiter=',')
 		state_writer.writerow(speeds)
 		state_writer.writerow(senses)
+		state_writer.writerow(sizes)
 
 if __name__ == "__main__":
 	main()
