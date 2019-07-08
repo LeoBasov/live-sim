@@ -74,7 +74,7 @@ class Creature:
 		dist = [sys.float_info.max, None]
 
 		for creaure in self.world.creatures:
-			if creaure.state.alive == True:
+			if (creaure.state.alive == True) and (creaure != self):
 
 				dist_new = np.linalg.norm(self.position - creaure.position)
 
@@ -128,20 +128,49 @@ class Creature:
 			self.state = Dead()
 
 	def _move(self):
-		dist = self._find_food()
+		dist_food = self._find_food()
+		dist_enemy = self._find_enemy()
 
-		if dist[1] == None:
+		if dist_food[1] == None and dist_enemy[1] == None:
 			self.position = self._get_new_pos_random()
-		else:
-			dist_vec = dist[1].position - self.position
-			dist_scal = np.linalg.norm(dist_vec)
-			speed = min(dist_scal, self.speed)
-			
-			if dist_scal > 0.0:
-				self.position = self.position + (speed/dist_scal)*dist_vec
+		elif dist_food[1] != None and dist_enemy[1] == None:
+			self._get_food(dist_food[1])
 
-			if(speed < 0.5*self.speed):
-				self._eat(dist[1])
+			if(dist_food[0] < 0.5*self.speed):
+				self._eat(dist_food[1])
+		elif (dist_food[1] == None and dist_enemy[1] != None) and (self.size > 1.2*dist_enemy[1].size):
+			self._get_food(dist_enemy[1])
+
+			if(dist_enemy[0] < 0.5*self.speed):
+				self.energy += dist_enemy[1].energy
+				dist_enemy[1].state = Dead()
+
+		elif (dist_food[1] == None and dist_enemy[1] != None) and (self.size < 1.2*dist_enemy[1].size):
+			self.position = self._get_new_pos_random()
+
+		elif (dist_food[1].energy > dist_enemy[1].energy) or (self.size < 1.2*dist_enemy[1].size):
+			self._get_food(dist_food[1])
+
+			if(dist_food[0] < 0.5*self.speed):
+				self._eat(dist_food[1])
+
+		elif (dist_food[1].energy < dist_enemy[1].energy) and (self.size > 1.2*dist_enemy[1].size):
+			self._get_food(dist_enemy[1])
+
+			if(dist_enemy[0] < 0.5*self.speed):
+				self.energy += dist_enemy[1].energy
+				dist_enemy[1].state = Dead()
+
+		else:
+			self.position = self._get_new_pos_random()
+
+	def _get_food(self, food):
+		dist_vec = food.position - self.position
+		dist_scal = np.linalg.norm(dist_vec)
+		speed = min(dist_scal, self.speed)
+			
+		if dist_scal > 0.0:
+			self.position = self.position + (speed/dist_scal)*dist_vec
 
 	def _eat(self, food):
 		self.energy += food.energy
