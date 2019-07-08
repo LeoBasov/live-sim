@@ -63,9 +63,11 @@ class Creature:
 		dist = self._find_enemy()
 
 		if dist[1] != None:
-			if dist[1].size > self.size:
+			if dist[1].size > 1.2*self.size:
+				dist[1].energy += 0.3*self.energy
 				self.state = Dead()
-			elif dist[1].size < self.size:
+			elif 1.2*dist[1].size < self.size:
+				self.energy += dist[1].energy
 				dist[1].state = Dead()
 
 	def _find_enemy(self):
@@ -108,12 +110,16 @@ class Creature:
 	def _mutate(self, creature):
 		self._mutate_speed(creature)
 		self._mutate_sense(creature)
+		self._mutate_size(creature)
 
 	def _mutate_speed(self, creature):
 		creature.speed = (1.1 - 0.2*random.random())*creature.speed
 
 	def _mutate_sense(self, creature):
 		creature.sense = (1.1 - 0.2*random.random())*creature.sense
+
+	def _mutate_size(self, creature):
+		creature.size = (1.1 - 0.2*random.random())*creature.size
 
 	def _consume_energy(self):
 		self.energy -= self.speed*self.speed*self.size*self.size*self.size

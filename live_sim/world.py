@@ -26,11 +26,12 @@ class World:
 		self.food = []
 		self.time = 0
 
-	def generate_creatures(self, number, sense = 1.0, speed = 1.0):
+	def generate_creatures(self, number, sense = 1.0, speed = 1.0, size = 1.0):
 		for i in range(number):
 			creature = Creature(self)
 			creature.sense = (0.001 + 10.0*random.random())*sense
 			creature.speed = (0.001 + 10.0*random.random())*speed
+			creature.size = (0.001 + 10.0*random.random())*size
 			creature.position = self._generate_random_position()
 
 			self.creatures.append(creature)
