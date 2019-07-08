@@ -75,7 +75,11 @@ class World:
 
 	def _update_creatures(self):
 		for creature in self.creatures:
-			creature.update()
+			creature.move()
+			creature.consume_energy()
+
+		for creature in self.creatures:
+			creature.reproduce()
 
 	def _remove_entities(self):
 		self._remove_food()

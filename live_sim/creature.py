@@ -41,6 +41,18 @@ class Creature:
 		self.sense = other.sense
 		self.position = other.position
 
+	def reproduce(self):
+		if self.state.reproducing:
+			self._repoduce()
+
+	def consume_energy(self):
+		if self.state.consuming:
+			self._consume_energy()
+
+	def move(self):
+		if self.state.moving:
+			self._move()
+
 	def update(self):
 		if self.state.reproducing:
 			self._repoduce()
