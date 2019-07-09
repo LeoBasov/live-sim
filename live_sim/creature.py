@@ -140,22 +140,38 @@ class Creature:
 			self.position = self._get_new_pos_random()
 
 		elif dist_food[1] != None and dist_enemy[1] == None:
-			self._get_food(dist_food)
+			self._only_food(dist_food)
 
-		elif (dist_food[1] == None and dist_enemy[1] != None) and (self.size > 1.2*dist_enemy[1].size):
-			self._get_food(dist_enemy)
-
-		elif (dist_food[1] == None and dist_enemy[1] != None) and (self.size < 1.2*dist_enemy[1].size):
-			self.position = self._get_new_pos_random()
-
-		elif (self._calc_rel_energy(dist_food) > self._calc_rel_energy(dist_enemy)) or (self.size < 1.2*dist_enemy[1].size):
-			self._get_food(dist_food)
-
-		elif (self._calc_rel_energy(dist_food) < self._calc_rel_energy(dist_enemy)) and (self.size > 1.2*dist_enemy[1].size):
-			self._get_food(dist_enemy)
+		elif dist_food[1] == None and dist_enemy[1] != None:
+			self._only_enemy(dist_enemy)
 
 		else:
+			self._both(dist_food, dist_enemy)
+
+	def _only_food(self, dist_food):
+		self._get_food(dist_food)
+
+	def _only_enemy(self, dist_enemy):
+		if self.size > 1.2*dist_enemy[1].size:
+			self._get_food(dist_enemy)
+		elif 1.2*self.size < dist_enemy[1].size:
+			self._flee(dist_enemy)
+		else:
 			self.position = self._get_new_pos_random()
+
+	def _flee(self, dist_enemy):
+		dist_vec = dist_enemy[1].position - self.position
+			
+		if dist_enemy[0] > 0.0:
+			self.position = self.position - (self.speed/dist_enemy[0])*dist_vec
+
+	def _both(self, dist_food, dist_enemy):
+		if (self._calc_rel_energy(dist_food) > self._calc_rel_energy(dist_enemy)) and (self.size > 1.2*dist_enemy[1].size):
+			self._get_food(dist_enemy)
+		elif (self._calc_rel_energy(dist_food) > self._calc_rel_energy(dist_enemy)) and (1.2*self.size > dist_enemy[1].size) and (dist_enemy[0] < dist_food[0]):
+			self._flee(dist_enemy)
+		else:
+			self._get_food(dist_food)
 
 	def _calc_rel_energy(self, dist):
 		return dist[1].energy - dist[0]*self.speed

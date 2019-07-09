@@ -31,7 +31,7 @@ def main():
 
 	creature_number = 100
 	creature_sense = 1.0
-	creature_speed = 1.0
+	creature_speed = 0.1
 	creature_size = 1.0
 
 	food_number = 5
