@@ -34,7 +34,7 @@ def main():
 	creature_speed = 1.0
 	creature_size = 1.0
 
-	food_number = 10
+	food_number = 5
 	number_cycles = 100
 
 	wrld.generate_creatures(creature_number, creature_sense, creature_speed, creature_size)
@@ -48,7 +48,7 @@ def main():
 
 		for creature in wrld.creatures:
 			point = (25 + 40*creature.position[0], 25 + 40*creature.position[1], 25 + 40*creature.position[2])
-			_draw_point(DISPLAYSURF, point, BLUE, int(max(1, creature.size*20)))
+			_draw_point(DISPLAYSURF, point, (min(255*creature.speed, 255), 100, 0), int(max(1, creature.size*20)))
 
 		for food in wrld.food:
 			point = (25 + 40*food.position[0], 25 + 40*food.position[1], 25 + 40*food.position[2])

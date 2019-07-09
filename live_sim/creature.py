@@ -30,6 +30,7 @@ class Creature:
 		self.speed = 1.0
 		self.sense = 1.0
 		self.size = 1.0
+		self.size_max = 1.0
 		self.position = np.array([0.0, 0.0, 0.0])
 		self.reproduction_threshold = 0.0
 
@@ -41,6 +42,7 @@ class Creature:
 		self.speed = other.speed
 		self.sense = other.sense
 		self.size = other.size
+		self.size_max = other.size_max
 		self.position = other.position
 
 	def reproduce(self):
@@ -58,6 +60,16 @@ class Creature:
 	def fight(self):
 		if self.state.fighting:
 			self._fight()
+
+	def grow(self):
+		if self.state.growing:
+			self._grow()
+
+	def _grow(self):
+		if self.size >= self.size_max:
+			self.state.growing = False
+		else:
+			self.size += self.size_max*0.1
 
 	def _fight(self):
 		dist = self._find_enemy()
@@ -94,8 +106,25 @@ class Creature:
 			creature.energy = self.energy_init
 
 			self._mutate(creature)
+			self._reproduce_position(creature)
 
 			self.world.creatures.append(creature)
+
+	def _reproduce_position(self, child):
+		position = self._get_new_pos_random()
+
+		dist_vec = position - self.position
+		dist = np.linalg.norm(dist_vec)
+
+		child.position = self.position + ((0.5*self.size + 0.5*child.size)/dist)*dist_vec
+
+		while self.world.collision(child.position):
+			position = self._get_new_pos_random()
+
+			dist_vec = position - self.position
+			dist = np.linalg.norm(dist_vec)
+
+			child.position = self.position + ((0.5*self.size + 0.5*child.size)/dist)*dist_vecf
 
 	def _mutate(self, creature):
 		self._mutate_speed(creature)
@@ -109,7 +138,8 @@ class Creature:
 		creature.sense = (1.1 - 0.2*random.random())*creature.sense
 
 	def _mutate_size(self, creature):
-		creature.size = (1.1 - 0.2*random.random())*creature.size
+		creature.size_max = (1.1 - 0.2*random.random())*creature.size_max
+		creature.size = 0.2*creature.size_max
 
 	def _consume_energy(self):
 		self.energy -= self.speed*self.speed*self.size*self.size*self.size
@@ -202,6 +232,7 @@ class State:
 		self.consuming = True
 		self.moving = True
 		self.fighting = True
+		self.growing = True
 
 class Dead(State):
 	"""docstring for Dead"""
@@ -214,3 +245,4 @@ class Dead(State):
 		self.consuming = False
 		self.moving = False
 		self.fighting = False
+		self.growing = False

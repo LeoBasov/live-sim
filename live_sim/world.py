@@ -32,6 +32,7 @@ class World:
 			creature.sense = (0.001 + 10.0*random.random())*sense
 			creature.speed = (0.001 + 10.0*random.random())*speed
 			creature.size = (0.001 + 10.0*random.random())*size
+			creature.size_max = creature.size
 			creature.position = self._generate_random_position()
 
 			self.creatures.append(creature)
@@ -76,6 +77,7 @@ class World:
 
 	def _update_creatures(self):
 		for creature in self.creatures:
+			creature.grow()
 			creature.move()
 			creature.consume_energy()
 			creature.fight()
