@@ -48,7 +48,7 @@ def main():
 
 		for creature in wrld.creatures:
 			point = (25 + 40*creature.position[0], 25 + 40*creature.position[1], 25 + 40*creature.position[2])
-			_draw_point(DISPLAYSURF, point, (min(255*creature.speed, 255), 255 - (min(255*creature.speed, 255)), 0), int(max(1, creature.size*20)))
+			_draw_point(DISPLAYSURF, point, (min(255*creature.speed, 255), 0, 255 - (min(255*creature.speed, 255))), int(max(1, creature.size*20)))
 
 		for food in wrld.food:
 			point = (25 + 40*food.position[0], 25 + 40*food.position[1], 25 + 40*food.position[2])

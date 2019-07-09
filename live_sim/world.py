@@ -30,8 +30,8 @@ class World:
 		for i in range(number):
 			creature = Creature(self)
 			creature.sense = (0.001 + 5.0*random.random())*sense
-			creature.speed = (0.001 + 5.0*random.random())*speed
-			creature.size = (0.001 + 5.0*random.random())*size
+			creature.speed = (0.001 + 1.0*random.random())*speed
+			creature.size = (0.001 + 3.0*random.random())*size
 			creature.size_max = creature.size
 			creature.position = self._generate_random_position()
 
