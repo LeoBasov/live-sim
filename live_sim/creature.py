@@ -84,16 +84,6 @@ class Creature:
 
 		return dist
 
-	def update(self):
-		if self.state.reproducing:
-			self._repoduce()
-
-		if self.state.consuming:
-			self._consume_energy()
-
-		if self.state.moving:
-			self._move()
-
 	def _repoduce(self):
 		if self.energy > (self.energy_init + self.energy_init * self.reproduction_threshold):
 			self.energy *= 0.5
