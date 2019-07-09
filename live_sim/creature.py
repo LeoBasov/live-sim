@@ -57,10 +57,6 @@ class Creature:
 		if self.state.moving:
 			self._move()
 
-	def fight(self):
-		if self.state.fighting:
-			self._fight()
-
 	def grow(self):
 		if self.state.growing:
 			self._grow()
@@ -70,17 +66,6 @@ class Creature:
 			self.state.growing = False
 		else:
 			self.size += self.size_max*0.1
-
-	def _fight(self):
-		dist = self._find_enemy()
-
-		if dist[1] != None:
-			if dist[1].size > 1.2*self.size:
-				dist[1].energy += 0.3*self.energy
-				self.state = Dead()
-			elif 1.2*dist[1].size < self.size:
-				self.energy += dist[1].energy
-				dist[1].state = Dead()
 
 	def _find_enemy(self):
 		dist = [sys.float_info.max, None]
@@ -222,7 +207,6 @@ class State:
 		self.reproducing = True
 		self.consuming = True
 		self.moving = True
-		self.fighting = True
 		self.growing = True
 
 class Dead(State):
@@ -235,5 +219,4 @@ class Dead(State):
 		self.reproducing = False
 		self.consuming = False
 		self.moving = False
-		self.fighting = False
 		self.growing = False
