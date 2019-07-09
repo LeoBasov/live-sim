@@ -126,12 +126,12 @@ class Creature:
 		elif dist_food[1] != None and dist_enemy[1] == None:
 			self._get_food(dist_food[1])
 
-			if(dist_food[0] < 0.5*self.speed):
+			if(dist_food[0] < 0.5*self.size):
 				self._eat(dist_food[1])
 		elif (dist_food[1] == None and dist_enemy[1] != None) and (self.size > 1.2*dist_enemy[1].size):
 			self._get_food(dist_enemy[1])
 
-			if(dist_enemy[0] < 0.5*self.speed):
+			if(dist_enemy[0] < 0.5*self.size):
 				self.energy += dist_enemy[1].energy
 				dist_enemy[1].state = Dead()
 
@@ -141,13 +141,13 @@ class Creature:
 		elif (dist_food[1].energy > dist_enemy[1].energy) or (self.size < 1.2*dist_enemy[1].size):
 			self._get_food(dist_food[1])
 
-			if(dist_food[0] < 0.5*self.speed):
+			if(dist_food[0] < 0.5*self.size):
 				self._eat(dist_food[1])
 
 		elif (dist_food[1].energy < dist_enemy[1].energy) and (self.size > 1.2*dist_enemy[1].size):
 			self._get_food(dist_enemy[1])
 
-			if(dist_enemy[0] < 0.5*self.speed):
+			if(dist_enemy[0] < 0.5*self.size):
 				self.energy += dist_enemy[1].energy
 				dist_enemy[1].state = Dead()
 
