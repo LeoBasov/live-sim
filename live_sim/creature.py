@@ -124,7 +124,7 @@ class Creature:
 			dist_vec = position - self.position
 			dist = np.linalg.norm(dist_vec)
 
-			child.position = self.position + ((0.5*self.size + 0.5*child.size)/dist)*dist_vecf
+			child.position = self.position + ((0.5*self.size + 0.5*child.size)/dist)*dist_vec
 
 	def _mutate(self, creature):
 		self._mutate_speed(creature)
