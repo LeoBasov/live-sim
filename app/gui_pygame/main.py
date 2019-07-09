@@ -30,8 +30,8 @@ def main():
 	wrld = World()
 
 	creature_number = 100
-	creature_sense = 3.5
-	creature_speed = 0.16
+	creature_sense = 1.0
+	creature_speed = 1.0
 	creature_size = 1.0
 
 	food_number = 10
@@ -68,9 +68,12 @@ def main():
 		fps_clock.tick(FPS)
 
 		if RUN:
+			if len(wrld.creatures) == 0:
+				RUN = False
+
 			wrld.update()
 
-			if wrld.time == 0 and len(wrld.creatures) > 0:
+			if wrld.time == 0:
 				wrld.generate_food(food_number)
 
 def reset(wrld, creature_number, creature_sense, creature_speed, creature_size, food_number):
