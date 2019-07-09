@@ -125,3 +125,8 @@ class Food:
 		self.eaten = False
 		self.energy = 5.0
 		self.position = np.array([0.0, 0.0, 0.0])
+
+	def be_consumed(self):
+		self.eaten = True
+
+		return self.energy

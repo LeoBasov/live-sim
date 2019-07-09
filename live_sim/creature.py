@@ -223,6 +223,11 @@ class Creature:
 
 		return position_new
 
+	def be_consumed(self):
+		self.state = Dead()
+
+		return self.energy
+
 class State:
 	"""Base state class representing the state of the creature"""
 	def __init__(self):
