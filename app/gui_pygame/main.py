@@ -74,6 +74,9 @@ def main():
 				wrld.generate_food(food_number)
 
 def reset(wrld, creature_number, creature_sense, creature_speed, creature_size, food_number):
+	wrld.creatures = []
+	wrld.food = []
+
 	wrld.generate_creatures(creature_number, creature_sense, creature_speed, creature_size)
 	wrld.generate_food(food_number)
 
