@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
-sys.path.append('../.')
+sys.path.append('../../.')
 
 from live_sim.world import World
 from os import system
