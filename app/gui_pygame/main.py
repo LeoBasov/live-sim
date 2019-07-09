@@ -39,6 +39,8 @@ def main():
 	wrld.generate_creatures(creature_number, creature_sense, creature_speed, creature_size)
 	wrld.generate_food(food_number)
 
+	RUN = False
+
 	while True: # the main game loop
 		DISPLAYSURF.fill(WHITE)
 		draw_frame(DISPLAYSURF)
@@ -55,14 +57,18 @@ def main():
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
+			elif event.type == KEYDOWN:
+				if event.key == K_SPACE:
+					RUN = not RUN
 
 		pygame.display.update()
 		fps_clock.tick(FPS)
 
-		wrld.update()
+		if RUN:
+			wrld.update()
 
-		if wrld.time == 0 and len(wrld.creatures) > 0:
-			wrld.generate_food(food_number)
+			if wrld.time == 0 and len(wrld.creatures) > 0:
+				wrld.generate_food(food_number)
 
 def draw_frame(display_surf):
 	pygame.draw.rect(display_surf, (0, 0, 0), (25, 25, 850 - 50, 850 - 50), 5)
