@@ -138,13 +138,13 @@ class Creature:
 		elif (dist_food[1] == None and dist_enemy[1] != None) and (self.size < 1.2*dist_enemy[1].size):
 			self.position = self._get_new_pos_random()
 
-		elif (dist_food[1].energy > dist_enemy[1].energy) or (self.size < 1.2*dist_enemy[1].size):
+		elif (self._calc_rel_energy(dist_food) > self._calc_rel_energy(dist_enemy)) or (self.size < 1.2*dist_enemy[1].size):
 			self._get_food(dist_food[1])
 
 			if(dist_food[0] < 0.5*self.size):
 				self._eat(dist_food[1])
 
-		elif (dist_food[1].energy < dist_enemy[1].energy) and (self.size > 1.2*dist_enemy[1].size):
+		elif (self._calc_rel_energy(dist_food) < self._calc_rel_energy(dist_enemy)) and (self.size > 1.2*dist_enemy[1].size):
 			self._get_food(dist_enemy[1])
 
 			if(dist_enemy[0] < 0.5*self.size):
@@ -153,6 +153,9 @@ class Creature:
 
 		else:
 			self.position = self._get_new_pos_random()
+
+	def _calc_rel_energy(self, dist):
+		return dist[1].energy - dist[0]*self.speed
 
 	def _get_food(self, food):
 		dist_vec = food.position - self.position
