@@ -15,9 +15,28 @@ You should have received a copy of the GNU General Public License
 long with this program. If not, see <https://www.gnu.org/licenses/>."""
 
 class Map:
-	def __init__(self):
-		pass
+	def __init__(self, coords = (10, 10)):
+		self.tiles = [[]]
+
+		self.set_up(coords)
+
+	def set_up(self, coords):
+		self.tiles = []
+
+		for x in range(coords[0]):
+			row = []
+
+			for y in range(coords[1]):
+				tile  = Tile()
+
+				tile.position[0] = x*tile.size + 0.5*tile.size
+				tile.position[1] = y*tile.size + 0.5*tile.size
+
+				row.append(tile)
+
+			self.tiles.append(row)
 
 class Tile:
 	def __init__(self):
-		pass
+		self.size = 2.0
+		self.position = [0, 0]

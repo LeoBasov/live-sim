@@ -3,7 +3,15 @@
 import pygame, sys
 from pygame.locals import *
 
+import sys
+sys.path.append('../../.')
+
+from live_sim.map import Map
+
 def main():
+	#Set up sim
+	game_map = Map()
+
 	#initiize pygame
 	pygame.mixer.pre_init(44100, -16, 2, 2048)
 	pygame.init()
