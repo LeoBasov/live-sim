@@ -39,8 +39,13 @@ def main():
 				pygame.quit()
 				sys.exit()
 
+		#prework graphics
+		scroller.scroll(game_map, scaling_factor)
+
 		#draw scenary
+		display_surf.fill((0, 0, 0))
 		draw_tiles(display_surf, game_map, scaling_factor)
+		draw_hud(display_surf)
 
 		pygame.display.update()
 		fps_clock.tick(FPS)
@@ -58,6 +63,10 @@ def draw_tiles(display_surf, game_map, scaling_factor, zoom = 1.0):
 
 			display_surf.fill((0, 100, 50), rect)
 			pygame.draw.rect(display_surf, (255, 255, 255), rect, 1)
+
+def draw_hud(display_surf):
+	display_surf.fill((0, 0, 0), (MAP_DISPLAY_SIZE[0], 0, RESOLUTION[0], RESOLUTION[1]))
+	pygame.draw.rect(display_surf, (50, 100, 100), (MAP_DISPLAY_SIZE[0], 0, RESOLUTION[0], RESOLUTION[1]), 5)
 
 def get_scaling_factor(game_map):
 	if len(game_map.tiles) > len(game_map.tiles[0]):
