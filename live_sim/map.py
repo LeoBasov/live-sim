@@ -17,6 +17,7 @@ long with this program. If not, see <https://www.gnu.org/licenses/>."""
 class Map:
 	def __init__(self, coords = (10, 10)):
 		self.tiles = [[]]
+		self.tile_size = 2.0
 
 		self.set_up(coords)
 
@@ -29,8 +30,8 @@ class Map:
 			for y in range(coords[1]):
 				tile  = Tile()
 
-				tile.position[0] = x*tile.size + 0.5*tile.size
-				tile.position[1] = y*tile.size + 0.5*tile.size
+				tile.position[0] = x*self.tile_size + 0.5*self.tile_size
+				tile.position[1] = y*self.tile_size + 0.5*self.tile_size
 
 				row.append(tile)
 
@@ -38,5 +39,4 @@ class Map:
 
 class Tile:
 	def __init__(self):
-		self.size = 2.0
 		self.position = [0, 0]
