@@ -29,7 +29,7 @@ def main():
 	
 	wrld = World()
 
-	creature_number = 100
+	creature_number = 10
 	creature_sense = 1.0
 	creature_speed = 1.0
 	creature_size = 1.0
@@ -37,8 +37,7 @@ def main():
 	food_number = 5
 	number_cycles = 100
 
-	wrld.generate_creatures(creature_number, creature_sense, creature_speed, creature_size)
-	wrld.generate_food(food_number)
+	reset(wrld, creature_number, creature_sense, creature_speed, creature_size, food_number)
 
 	RUN = False
 
