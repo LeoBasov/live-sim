@@ -33,6 +33,7 @@ class Creature:
 		self.size_max = 1.0
 		self.position = np.array([0.0, 0.0, 0.0])
 		self.reproduction_threshold = 0.0
+		self.children = []
 
 	def copy(self, other):
 		self.state = other.state
@@ -70,14 +71,14 @@ class Creature:
 	def _find_enemy(self):
 		dist = [sys.float_info.max, None]
 
-		for creaure in self.world.creatures:
-			if (creaure.state.alive == True) and (creaure != self):
+		for creature in self.world.creatures:
+			if (creature.state.alive == True) and (creature != self) and creature not in self.children:
 
-				dist_new = np.linalg.norm(self.position - creaure.position)
+				dist_new = np.linalg.norm(self.position - creature.position)
 
 				if (dist_new <= self.sense) and (dist_new < dist[0]):
 					dist[0] =  dist_new
-					dist[1] = creaure
+					dist[1] = creature
 
 		return dist
 
@@ -93,6 +94,7 @@ class Creature:
 			self._mutate(creature)
 			self._reproduce_position(creature)
 
+			self.children.append(creature)
 			self.world.creatures.append(creature)
 
 	def _reproduce_position(self, child):
