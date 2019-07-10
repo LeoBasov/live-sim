@@ -28,7 +28,7 @@ def main():
 
 	#Set up stuff
 	scaling_factor = get_scaling_factor(game_map)
-	scroller = graphics.Scroller()
+	scroller = graphics.Scroller(scaling_factor)
 
 	while True: # the main game loop
 		events = pygame.event.get()
@@ -40,7 +40,7 @@ def main():
 				sys.exit()
 
 		#prework graphics
-		scroller.scroll(game_map, scaling_factor)
+		scroller.process(game_map)
 
 		#draw scenary
 		display_surf.fill((0, 0, 0))
