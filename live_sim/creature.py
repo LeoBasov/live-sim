@@ -191,6 +191,7 @@ class Creature:
 			self.position = self._random_move()
 
 	def _flee(self, dist_enemy):
+		self.move_counter = 0
 		dist_vec = dist_enemy[1].position - self.position
 			
 		if dist_enemy[0] > 0.0:
