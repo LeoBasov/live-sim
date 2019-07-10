@@ -75,7 +75,7 @@ class Creature:
 
 				dist_new = np.linalg.norm(self.position - creaure.position)
 
-				if (dist_new <= self.sense) and (dist_new <= 0.5*self.speed) and (dist_new < dist[0]):
+				if (dist_new <= self.sense) and (dist_new < dist[0]):
 					dist[0] =  dist_new
 					dist[1] = creaure
 
@@ -163,7 +163,10 @@ class Creature:
 		dist_vec = dist_enemy[1].position - self.position
 			
 		if dist_enemy[0] > 0.0:
-			self.position = self.position - (self.speed/dist_enemy[0])*dist_vec
+			position_new = self.position - (self.speed/dist_enemy[0])*dist_vec
+
+			if not self.world.collision(position_new):
+				self.position = position_new
 
 	def _both(self, dist_food, dist_enemy):
 		if (self._calc_rel_energy(dist_food) > self._calc_rel_energy(dist_enemy)) and (self.size > 1.2*dist_enemy[1].size):
