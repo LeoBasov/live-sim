@@ -40,12 +40,36 @@ def main():
 	reset(wrld, creature_number, creature_sense, creature_speed, creature_size, food_number)
 
 	RUN = False
+	moving  = False
+	pos_alt = [0, 0]
+	pos_new = [0, 0]
 
 	while True: # the main game loop
 		DISPLAYSURF.fill(WHITE)
 		draw_frame(DISPLAYSURF)
 		max_speed = 0
 		min_speed = sys.float_info.max
+
+		if moving:
+			pos_new = pygame.mouse.get_pos()
+			pos_rel = (pos_new[0] - pos_alt[0], pos_new[1] - pos_alt[1])
+			pos_alt = pos_new
+
+			for creature in wrld.food:
+				creature.position[0] = creature.position[0] + pos_rel[0]/40
+				creature.position[1] = creature.position[1] + pos_rel[1]/40
+
+				if creature.position[0] > 20:
+					creature.position[0] = 20
+
+				if creature.position[0] < 0:
+					creature.position[0] = 0
+
+				if creature.position[1] > 20:
+					creature.position[1] = 20
+
+				if creature.position[1] < 0:
+					creature.position[1] = 0
 
 		for creature in wrld.creatures:
 			if creature.speed > max_speed:
@@ -71,6 +95,13 @@ def main():
 					RUN = not RUN
 				elif event.key == K_r:
 					reset(wrld, creature_number, creature_sense, creature_speed, creature_size, food_number)
+			elif event.type == MOUSEBUTTONDOWN:
+				if event.button == 1:
+					moving = True
+					pos_alt = pygame.mouse.get_pos()
+			elif event.type == MOUSEBUTTONUP:
+				if event.button == 1:
+					moving = False
 
 		pygame.display.update()
 		fps_clock.tick(FPS)
