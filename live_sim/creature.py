@@ -34,6 +34,9 @@ class Creature:
 		self.position = np.array([0.0, 0.0, 0.0])
 		self.reproduction_threshold = 0.0
 		self.children = []
+		self.move_counter = 0
+		self.move_counter_max = 10
+		self.move_vector = np.array([0, 0, 0])
 
 	def copy(self, other):
 		self.state = other.state
@@ -45,6 +48,7 @@ class Creature:
 		self.size = other.size
 		self.size_max = other.size_max
 		self.position = other.position
+		self.reproduction_threshold = other.reproduction_threshold
 
 	def reproduce(self):
 		if self.state.reproducing:
@@ -139,7 +143,7 @@ class Creature:
 		dist_enemy = self._find_enemy()
 
 		if dist_food[1] == None and dist_enemy[1] == None:
-			self.position = self._get_new_pos_random()
+			self.position = self._random_move()
 
 		elif dist_food[1] != None and dist_enemy[1] == None:
 			self._only_food(dist_food)
@@ -150,6 +154,27 @@ class Creature:
 		else:
 			self._both(dist_food, dist_enemy)
 
+	def _random_move(self):
+		if self.move_counter == 0:
+			position = self._get_new_pos_random()
+			self.move_vector = (position - self.position)
+			self.move_vector /= np.linalg.norm(self.move_vector)
+
+		position_new = self.position + self.speed*self.move_vector
+
+		if self.world.collision(position_new):
+			self.move_counter = 0
+
+			return self._random_move()
+
+		self.move_counter += 1
+
+		if self.move_counter > self.move_counter_max:
+			self.move_counter = 0
+
+		return position_new
+
+
 	def _only_food(self, dist_food):
 		self._get_food(dist_food)
 
@@ -159,7 +184,7 @@ class Creature:
 		elif 1.2*self.size < dist_enemy[1].size:
 			self._flee(dist_enemy)
 		else:
-			self.position = self._get_new_pos_random()
+			self.position = self._random_move()
 
 	def _flee(self, dist_enemy):
 		dist_vec = dist_enemy[1].position - self.position
