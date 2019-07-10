@@ -44,10 +44,19 @@ def main():
 	while True: # the main game loop
 		DISPLAYSURF.fill(WHITE)
 		draw_frame(DISPLAYSURF)
+		max_speed = 0
+		min_speed = sys.float_info.max
+
+		for creature in wrld.creatures:
+			if creature.speed > max_speed:
+				max_speed = creature.speed
+
+			if creature.speed < min_speed:
+				min_speed = creature.speed
 
 		for creature in wrld.creatures:
 			point = (25 + 40*creature.position[0], 25 + 40*creature.position[1], 25 + 40*creature.position[2])
-			_draw_point(DISPLAYSURF, point, (min(255*creature.speed, 255), 0, 255 - (min(255*creature.speed, 255))), int(max(1, creature.size*20)))
+			_draw_point(DISPLAYSURF, point, get_color(creature.speed, max_speed, min_speed), int(max(1, creature.size*20)))
 
 		for food in wrld.food:
 			point = (25 + 40*food.position[0], 25 + 40*food.position[1], 25 + 40*food.position[2])
@@ -88,6 +97,28 @@ def draw_frame(display_surf):
 def _draw_point(surface_surf, point, color, size = 5):
 		pygame.draw.circle(surface_surf, color, (int(point[0]), int(point[1])), size, 0)
 		pygame.draw.circle(surface_surf, BLACK, (int(point[0]), int(point[1])), size, min(size, 1))
+
+def get_color(value, value_max, value_min):
+	R = 0
+	G = 0
+	B = 0
+
+	dist = value_max - value_min
+
+	if value < 0.5*value_max:
+		R = 0
+		G = 255*((value - value_min)/(0.5*dist))
+		B = 255 - 255*((value - value_min)/(0.5*dist))
+	elif value > 0.5*value_max  and value < value_max:
+		R = 255*((value - value_min)/(dist))
+		G = 255 - 255*((value - value_min)/(dist))
+		B = 0
+	else:
+		R = 255
+		G = 0
+		B = 0
+
+	return (R, G, B)
 
 if __name__ == "__main__":
 	main()
