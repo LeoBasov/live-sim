@@ -99,7 +99,8 @@ class Creature:
 			self._mutate(creature)
 			self._reproduce_position(creature)
 
-			creature.energy = creature.size*creature.size*creature.size*BASE_ENERGY
+			creature.energy_init = creature.size*creature.size*creature.size*BASE_ENERGY
+			creature.energy = creature.energy_init
 
 			self.children.append(creature)
 			self.world.creatures.append(creature)
