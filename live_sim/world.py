@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License
 long with this program. If not, see <https://www.gnu.org/licenses/>."""
 
 from .creature import Creature
+from .creature import BASE_ENERGY
 import random
 import math
 import numpy as np
@@ -33,6 +34,7 @@ class World:
 			creature.speed = (0.001 + 1.0*random.random())*speed
 			creature.size = (0.001 + 3.0*random.random())*size
 			creature.size_max = creature.size
+			creature.energy = creature.size*creature.size*creature.size*BASE_ENERGY
 			creature.position = self._generate_random_position()
 
 			self.creatures.append(creature)

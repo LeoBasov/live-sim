@@ -19,13 +19,15 @@ import math
 import numpy as np
 import sys
 
+BASE_ENERGY = 10
+
 class Creature:
 	"""Docstring for creaure class"""
 
 	def __init__(self, world):
 		self.state = State()
 		self.world = world
-		self.energy_init = 10.0
+		self.energy_init = BASE_ENERGY
 		self.energy = self.energy_init
 		self.speed = 1.0
 		self.sense = 1.0
@@ -93,10 +95,11 @@ class Creature:
 			creature = Creature(self.world)
 
 			creature.copy(self)
-			creature.energy = self.energy_init
 
 			self._mutate(creature)
 			self._reproduce_position(creature)
+
+			creature.energy = creature.size*creature.size*creature.size*BASE_ENERGY
 
 			self.children.append(creature)
 			self.world.creatures.append(creature)
