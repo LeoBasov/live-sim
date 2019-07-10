@@ -7,6 +7,7 @@ import sys
 sys.path.append('../../.')
 
 from live_sim.map import Map
+import graphics
 
 #initiize pygame constants
 FPS = 30
@@ -16,7 +17,7 @@ MAP_DISPLAY_SIZE = (800, 800)
 
 def main():
 	#Set up sim
-	game_map = Map()
+	game_map = Map((20, 20))
 
 	#initiize pygame instant
 	pygame.mixer.pre_init(44100, -16, 2, 2048)
@@ -27,9 +28,13 @@ def main():
 
 	#Set up stuff
 	scaling_factor = get_scaling_factor(game_map)
+	scroller = graphics.Scroller()
 
 	while True: # the main game loop
-		for event in pygame.event.get():
+		events = pygame.event.get()
+		scroller.handle_events(events)
+
+		for event in events:
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
@@ -51,8 +56,8 @@ def draw_tiles(display_surf, game_map, scaling_factor, zoom = 1.0):
 			rect_height = game_map.tile_size*scaling_factor
 			rect = pygame.Rect(rect_left, rect_top, rect_width, rect_height)
 
-			display_surf.fill((0, 0, 100), rect)
-			pygame.draw.rect(display_surf, (255, 255, 255), rect, 3)
+			display_surf.fill((0, 100, 50), rect)
+			pygame.draw.rect(display_surf, (255, 255, 255), rect, 1)
 
 def get_scaling_factor(game_map):
 	if len(game_map.tiles) > len(game_map.tiles[0]):
