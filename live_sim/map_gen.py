@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License
 long with this program. If not, see <https://www.gnu.org/licenses/>."""
 
 from opensimplex import OpenSimplex
+import math
 
 class Generator:
 	def __init__(self):
@@ -35,7 +36,7 @@ class Generator:
 				for weight_frequency in weight_frequencies:
 					weight = weight_frequency[0]
 					frequency = weight_frequency[1]
-					game_map.pixels[y][x] += weight*self.noise(frequency*x/resolution[0], frequency*y/resolution[1])
+					game_map.pixels[y][x] += weight*math.pow(self.noise(frequency*x/resolution[0], frequency*y/resolution[1]), 5.0)
 
 		return game_map
 
