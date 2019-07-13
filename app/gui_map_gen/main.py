@@ -91,7 +91,10 @@ class Scroller:
 				self.pos_old = pygame.mouse.get_pos()
 			elif event.type == MOUSEBUTTONUP and event.button == 1:
 				self.active = False
-
+			elif event.type == MOUSEBUTTONUP and event.button == 4:
+				self.total_offset[1] += self.scaling_factor
+			elif event.type == MOUSEBUTTONUP and event.button == 5:
+				self.total_offset[1] -= self.scaling_factor
 			if event.type == KEYDOWN and event.key == K_r:
 				self.reset = True
 
