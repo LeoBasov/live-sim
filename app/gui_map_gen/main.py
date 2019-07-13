@@ -13,8 +13,10 @@ FPS = 30
 RESOLUTION = (800, 800)
 
 def main():
+	weight_frequencies = ((0.5, 10), (0.25, 20), (0.25, 80))
+
 	generator = Generator()
-	height_map = generator.generate_map(RESOLUTION, 10)
+	height_map = generator.generate_map(RESOLUTION, weight_frequencies)
 
 	#initiize pygame instant
 	pygame.mixer.pre_init(44100, -16, 2, 2048)

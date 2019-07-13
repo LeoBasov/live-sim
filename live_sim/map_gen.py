@@ -27,12 +27,15 @@ class Generator:
 		# Rescale from -1.0:+1.0 to 0.0:1.0
 		return self.noise_gen.noise2d(x, y)/2.0 + 0.5
 
-	def generate_map(self, resolution, frequency = 1):
+	def generate_map(self, resolution, weight_frequencies = ((1, 1),)):
 		game_map = Map(resolution)
 
 		for y in range(resolution[1]):
 			for x in range(resolution[0]):
-				game_map.pixels[y][x] = self.noise(frequency*x/resolution[0], frequency*y/resolution[1])
+				for weight_frequency in weight_frequencies:
+					weight = weight_frequency[0]
+					frequency = weight_frequency[1]
+					game_map.pixels[y][x] += weight*self.noise(frequency*x/resolution[0], frequency*y/resolution[1])
 
 		return game_map
 
