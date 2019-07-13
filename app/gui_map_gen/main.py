@@ -6,11 +6,16 @@ from pygame.locals import *
 import sys
 sys.path.append('../../.')
 
+from live_sim.map_gen import Generator
+
 #initiize pygame constants
 FPS = 30
 RESOLUTION = (800, 800)
 
 def main():
+	generator = Generator()
+	height_map = generator.generate_map(RESOLUTION, 10)
+
 	#initiize pygame instant
 	pygame.mixer.pre_init(44100, -16, 2, 2048)
 	pygame.init()
@@ -27,14 +32,15 @@ def main():
 				sys.exit()
 
 		#draw scenary
-		display_surf.fill((0, 0, 0))
-		draw_hud(display_surf)
+		draw_map(display_surf, height_map)
 
 		pygame.display.update()
 		fps_clock.tick(FPS)
 
-def draw_hud(display_surf):
-	display_surf.fill((100, 100, 100))
+def draw_map(display_surf, height_map):
+	for y in range(len(height_map.pixels)):
+		for x in range(len(height_map.pixels[y])):
+			display_surf.set_at((x, y), (255*height_map.pixels[y][x], 255*height_map.pixels[y][x], 255*height_map.pixels[y][x]))
 
 if __name__ == "__main__":
 	main()
