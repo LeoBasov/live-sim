@@ -36,7 +36,7 @@ class Generator:
 				for weight_frequency in weight_frequencies:
 					weight = weight_frequency[0]
 					frequency = weight_frequency[1]
-					game_map.pixels[y][x] += weight*math.pow(self.noise(frequency*x/resolution[0], frequency*y/resolution[1]), 5.0)
+					game_map.pixels[y][x] += weight*math.pow(self.noise(frequency*x/resolution[0], frequency*y/resolution[1]), 4.0)
 
 		return game_map
 
@@ -45,15 +45,7 @@ class Map:
 		self.pixels = self._gen_map(resolution)
 
 	def _gen_map(self, resolution):
-		pixels = []
-
-		for y in range(resolution[1]):
-			row= []
-
-			for x in range(resolution[0]):
-				row.append(0.0)
-
-			pixels.append(row)
+		pixels = [[0] * resolution[0] for i in range(resolution[1])]
 
 		return pixels
 

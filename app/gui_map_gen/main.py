@@ -51,10 +51,29 @@ def draw_map(display_surf, height_map, water_level):
 		for x in range(len(height_map.pixels[y])):
 			value = height_map.pixels[y][x]
 
-			if value > water_level:
-				display_surf.set_at((x, y), (255*value, 255*value, 255*value))
-			else:
+			if value < water_level:
 				display_surf.set_at((x, y), (0, 0, 255))
+
+			elif value < 0.1 + water_level:
+				display_surf.set_at((x, y), (255, 255, 0))
+				
+			elif value < 0.2 + water_level:
+				display_surf.set_at((x, y), (0, 255, 0))
+				
+			elif value < 0.3 + water_level:
+				display_surf.set_at((x, y), (0, 155, 0))
+				
+			elif value < 0.4 + water_level:
+				display_surf.set_at((x, y), (255, 255, 255))
+				
+			elif value < 0.5 + water_level:
+				display_surf.set_at((x, y), (155, 155, 0))
+				
+			else:
+				display_surf.set_at((x, y), (255, 255, 255))
+				
+			"""else:
+				display_surf.set_at((x, y), (255*value, 255*value, 255*value))"""
 
 class Scroller:
 	def __init__(self, scaling_factor = 1.0):
