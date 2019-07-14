@@ -14,7 +14,7 @@ RESOLUTION = (500, 500)
 
 def main():
 	water_level = 0.0
-	weight_frequencies = ((0.5, 10), (0.25, 20))
+	weight_frequencies = ((0.5, 10, 4), (0.25, 20, 4))
 	scroller = Scroller(0.01)
 
 	generator = Generator()
