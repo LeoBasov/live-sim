@@ -40,9 +40,9 @@ class Brain(Network):
 
 		self._add_output_node(3)
 
-		self._set_up_genes()
+		self.__set_up_genes()
 
-	def _set_up_genes(self):
+	def __set_up_genes(self):
 		gene1 = Gene(in_node = 0, out_node = 3, weight = 10 - 20.0*random.random(), enabled = True)
 		gene2 = Gene(in_node = 1, out_node = 3, weight = 10 - 20.0*random.random(), enabled = True)
 		gene3 = Gene(in_node = 2, out_node = 3, weight = 10 - 20.0*random.random(), enabled = True)
