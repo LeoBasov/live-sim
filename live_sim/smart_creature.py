@@ -22,6 +22,7 @@ sys.path.append('../../neat-python/.')
 from neat.network import Node
 from neat.network import Gene
 from neat.network import Network
+from neat.neat import NEAT
 
 class Brain(Network):
 	"""This is the brain of of the new creature typ
@@ -50,8 +51,9 @@ class Brain(Network):
 
 		self.set_genes([gene1, gene2, gene3])
 
-class Mutator:
-	pass
+class Mutator(NEAT):
+	def __init__(self):
+		super().__init__()
 
 class SmartCreature:
 	pass
