@@ -39,11 +39,38 @@ class Brain(Network):
 
 		node_id = 1
 
+		#------------------------------------------------------------------
+		#INPUT NODES
+		#------------------------------------------------------------------
 		#Other creature related input
 		node_id = self.__add_input_node(node_id) #Angle to next creature
 		node_id = self.__add_input_node(node_id) #Distance to next creature
+		node_id = self.__add_input_node(node_id) #Size of next creature
+		node_id = self.__add_input_node(node_id) #Next creature found status
 
-		node_id = self.__add_output_node(node_id)
+		#Food related input
+		node_id = self.__add_input_node(node_id) #Angle to next creature
+		node_id = self.__add_input_node(node_id) #Distance to next creature
+		node_id = self.__add_input_node(node_id) #Food found status
+
+		#Self related input
+		node_id = self.__add_input_node(node_id) #Energy
+		node_id = self.__add_input_node(node_id) #Size
+		node_id = self.__add_input_node(node_id) #Speed
+
+		#------------------------------------------------------------------
+		#OUTPUT NODES
+		#------------------------------------------------------------------
+		#Movement related input
+		node_id = self.__add_output_node(node_id) #Move status output
+		node_id = self.__add_output_node(node_id) #Move angle output
+		node_id = self.__add_output_node(node_id) #Move speed output
+
+		#Eating related input
+		node_id = self.__add_output_node(node_id) #Eat status output
+
+		#Reproduction related input
+		node_id = self.__add_output_node(node_id) #Reproduce status output
 
 		self.__set_up_genes()
 
@@ -51,13 +78,13 @@ class Brain(Network):
 		bias_node_id = 0
 		genes = []
 
-		for in_node_id in self.input_node_ids:
-			for out_node_id in self.output_node_ids:
-				gene1 = Gene(in_node = in_node_id, out_node = out_node_id, weight = self.__get_random_weight(), enabled = True)
-				gene2 = Gene(in_node = bias_node_id, out_node = out_node_id, weight = self.__get_random_weight(), enabled = True)
-				
-				genes.append(gene1)
-				genes.append(gene2)
+		for out_node_id in self.output_node_ids:
+			for in_node_id in self.input_node_ids:
+				gene = Gene(in_node = in_node_id, out_node = out_node_id, weight = self.__get_random_weight(), enabled = True)
+				genes.append(gene)
+
+			gene = Gene(in_node = bias_node_id, out_node = out_node_id, weight = self.__get_random_weight(), enabled = True)
+			genes.append(gene)
 
 		self.set_genes(genes)
 
