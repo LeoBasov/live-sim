@@ -18,6 +18,7 @@ import sys
 import random
 from enum import Enum
 import copy
+import math
 
 sys.path.append('../../neat-python/.')
 
@@ -155,8 +156,11 @@ class SmartCreature(Creature):
 		dist_food = self._find_food()
 		dist_enemy = self._find_enemy()
 		input_values = self.__set_up_brain_input_values(dist_food, dist_enemy)
-		
+
 		self.brain.execute(input_values)
+
+	def __process_output(self):
+		pass
 
 	def __set_up_brain_input_values(self, dist_food, dist_enemy):
 		input_values = []
@@ -168,10 +172,10 @@ class SmartCreature(Creature):
 
 	def __set_brain_with_other_creature_input_values(self, input_values, dist_enemy):
 		if dist_enemy[1]:
-			input_values.append((1, InputNodeType.OTHER_CREATURE_ANGLE.value))
-			input_values.append((1, InputNodeType.OTHER_CREATURE_DISTANCE.value))
-			input_values.append((1, InputNodeType.OTHER_CREATURE_SIZE.value))
-			input_values.append((1, InputNodeType.OTHER_CREATURE_ENERGY.value))
+			input_values.append((self.__get_angle(dist_enemy), InputNodeType.OTHER_CREATURE_ANGLE.value))
+			input_values.append((dist_enemy[0], InputNodeType.OTHER_CREATURE_DISTANCE.value))
+			input_values.append((dist_enemy[1].size, InputNodeType.OTHER_CREATURE_SIZE.value))
+			input_values.append((dist_enemy[1].energy, InputNodeType.OTHER_CREATURE_ENERGY.value))
 			input_values.append((1, InputNodeType.OTHER_CREATURE_FOUND_STATUS.value))
 		else:
 			input_values.append((0, InputNodeType.OTHER_CREATURE_ANGLE.value))
@@ -182,10 +186,15 @@ class SmartCreature(Creature):
 
 	def __set_brain_with_food_input_values(self, input_values, dist_food):
 		if dist_food[1]:
-			input_values.append((1, InputNodeType.FOOD_ANGLE.value))
-			input_values.append((1, InputNodeType.FOOD_DISTANCE.value))
+			input_values.append((self.__get_angle(dist_food), InputNodeType.FOOD_ANGLE.value))
+			input_values.append((dist_food[0], InputNodeType.FOOD_DISTANCE.value))
 			input_values.append((1, InputNodeType.FOOD_FOUND_STATUS.value))
 		else:
 			input_values.append((0, InputNodeType.FOOD_ANGLE.value))
 			input_values.append((0, InputNodeType.FOOD_DISTANCE.value))
 			input_values.append((0, InputNodeType.FOOD_FOUND_STATUS.value))
+
+	def __get_angle(self, dist_other):
+		vec = (dist_other[1].position - self.position)/dist_other[0]
+
+		return math.sin(vec[0])
