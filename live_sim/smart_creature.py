@@ -37,7 +37,7 @@ class Brain(Network):
 		"""
 		super().__init__()
 
-		node_id = 0
+		node_id = 1
 
 		#Other creature related input
 		node_id = self.__add_input_node(node_id) #Angle to next creature
