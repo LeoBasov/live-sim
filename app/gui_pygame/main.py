@@ -5,6 +5,12 @@ from pygame.locals import *
 
 import sys
 sys.path.append('../../.')
+sys.path.append('../../../neat-python/.')
+
+from neat.network import Node
+from neat.network import Gene
+from neat.network import Network
+from neat.neat import NEAT
 
 from live_sim.world import World
 from os import system
