@@ -15,4 +15,20 @@ class UtilityTest(unittest.TestCase):
 
 	def test_creature(self):
 		world = World()
-		mutator  = sc.SmartCreature(world)
+		creature  = sc.SmartCreature(world)
+
+	def test_copy(self):
+		world = World()
+		creature1 = sc.SmartCreature(world)
+		creature2 = sc.SmartCreature(world)
+
+		creature1.speed = 3.0
+		creature2.speed = 7.0
+
+		self.assertEqual(creature1.speed, 3.0)
+		self.assertEqual(creature2.speed, 7.0)
+
+		creature1.copy(creature2)
+
+		self.assertEqual(creature1.speed, 7.0)
+		self.assertEqual(creature2.speed, 7.0)

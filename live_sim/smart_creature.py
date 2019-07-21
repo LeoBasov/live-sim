@@ -17,6 +17,7 @@ long with this program. If not, see <https://www.gnu.org/licenses/>."""
 import sys
 import random
 from enum import Enum
+import copy
 
 sys.path.append('../../neat-python/.')
 
@@ -143,3 +144,9 @@ class SmartCreature(Creature):
 
 		self.mutator = Mutator()
 		self.brain = Brain()
+
+	def copy(self, other):
+		super().copy(other)
+
+		self.mutator = copy.deepcopy(other.mutator)
+		self.brain = copy.deepcopy(other.brain)
