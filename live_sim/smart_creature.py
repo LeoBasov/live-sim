@@ -16,6 +16,7 @@ long with this program. If not, see <https://www.gnu.org/licenses/>."""
 
 import sys
 import random
+from enum import Enum
 
 sys.path.append('../../neat-python/.')
 
@@ -25,6 +26,36 @@ from neat.network import Network
 from neat.neat import NEAT
 
 from .creature import Creature
+
+class InputNodeType(Enum):
+	#Other creature related input
+	OTHER_CREATURE_ANGLE = 1
+	OTHER_CREATURE_DISTANCE = 2
+	OTHER_CREATURE_SIZE = 3
+	OTHER_CREATURE_ENERGY = 4
+	OTHER_CREATURE_FOUND_STATUS = 5
+
+	#Food related input
+	FOOD_ANGLE = 6
+	FOOD_DISTANCE = 7
+	FOOD_FOUND_STATUS = 8
+
+	#Self related input
+	SELF_ENERNGY = 9
+	SELF_SIZE = 10
+	SELF_SPEED = 11
+
+class OutputNodeType(Enum):
+	#Movement related input
+	MOVE_STATUS = 12 #Move status output
+	MOVE_ANGLE = 13 #Move angle output
+	MOVE_SPEED = 14 #Move speed output
+
+	#Eating related input
+	EAT_STATUS = 15 #Eat status output
+
+	#Reproduction related input
+	REPRODUCE_STATUS = 16 #Reproduce status output
 
 class Brain(Network):
 	"""This is the brain of of the new creature typ
@@ -39,40 +70,39 @@ class Brain(Network):
 		"""
 		super().__init__()
 
-		node_id = 1
-
 		#------------------------------------------------------------------
 		#INPUT NODES
 		#------------------------------------------------------------------
 		#Other creature related input
-		node_id = self.__add_input_node(node_id) #Angle to next creature
-		node_id = self.__add_input_node(node_id) #Distance to next creature
-		node_id = self.__add_input_node(node_id) #Size of next creature
-		node_id = self.__add_input_node(node_id) #Next creature found status
+		self._add_input_node(InputNodeType.OTHER_CREATURE_ANGLE) #Angle to next creature
+		self._add_input_node(InputNodeType.OTHER_CREATURE_DISTANCE) #Distance to next creature
+		self._add_input_node(InputNodeType.OTHER_CREATURE_SIZE) #Size of next creature
+		self._add_input_node(InputNodeType.OTHER_CREATURE_ENERGY) #Enerngy of next creature
+		self._add_input_node(InputNodeType.OTHER_CREATURE_FOUND_STATUS) #Next creature found status
 
 		#Food related input
-		node_id = self.__add_input_node(node_id) #Angle to next creature
-		node_id = self.__add_input_node(node_id) #Distance to next creature
-		node_id = self.__add_input_node(node_id) #Food found status
+		self._add_input_node(InputNodeType.FOOD_ANGLE) #Angle to next creature
+		self._add_input_node(InputNodeType.FOOD_ANGLE) #Distance to next creature
+		self._add_input_node(InputNodeType.FOOD_FOUND_STATUS) #Food found status
 
 		#Self related input
-		node_id = self.__add_input_node(node_id) #Energy
-		node_id = self.__add_input_node(node_id) #Size
-		node_id = self.__add_input_node(node_id) #Speed
+		self._add_input_node(InputNodeType.SELF_ENERNGY) #Energy
+		self._add_input_node(InputNodeType.SELF_SIZE) #Size
+		self._add_input_node(InputNodeType.SELF_SPEED) #Speed
 
 		#------------------------------------------------------------------
 		#OUTPUT NODES
 		#------------------------------------------------------------------
 		#Movement related input
-		node_id = self.__add_output_node(node_id) #Move status output
-		node_id = self.__add_output_node(node_id) #Move angle output
-		node_id = self.__add_output_node(node_id) #Move speed output
+		self._add_output_node(OutputNodeType.MOVE_STATUS) #Move status output
+		self._add_output_node(OutputNodeType.MOVE_ANGLE) #Move angle output
+		self._add_output_node(OutputNodeType.MOVE_SPEED) #Move speed output
 
 		#Eating related input
-		node_id = self.__add_output_node(node_id) #Eat status output
+		self._add_output_node(OutputNodeType.EAT_STATUS) #Eat status output
 
 		#Reproduction related input
-		node_id = self.__add_output_node(node_id) #Reproduce status output
+		self._add_output_node(OutputNodeType.REPRODUCE_STATUS) #Reproduce status output
 
 		self.__set_up_genes()
 
@@ -92,16 +122,6 @@ class Brain(Network):
 
 	def __get_random_weight(self):
 		return  10 - 20.0*random.random()
-
-	def __add_input_node(self, node_id):
-		self._add_input_node(node_id)
-
-		return node_id + 1
-
-	def __add_output_node(self, node_id):
-		self._add_output_node(node_id)
-
-		return node_id + 1
 
 class Mutator(NEAT):
 	def __init__(self):
