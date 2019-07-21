@@ -75,35 +75,35 @@ class Brain(Network):
 		#INPUT NODES
 		#------------------------------------------------------------------
 		#Other creature related input
-		self._add_input_node(InputNodeType.OTHER_CREATURE_ANGLE) #Angle to next creature
-		self._add_input_node(InputNodeType.OTHER_CREATURE_DISTANCE) #Distance to next creature
-		self._add_input_node(InputNodeType.OTHER_CREATURE_SIZE) #Size of next creature
-		self._add_input_node(InputNodeType.OTHER_CREATURE_ENERGY) #Enerngy of next creature
-		self._add_input_node(InputNodeType.OTHER_CREATURE_FOUND_STATUS) #Next creature found status
+		self._add_input_node(InputNodeType.OTHER_CREATURE_ANGLE.value) #Angle to next creature
+		self._add_input_node(InputNodeType.OTHER_CREATURE_DISTANCE.value) #Distance to next creature
+		self._add_input_node(InputNodeType.OTHER_CREATURE_SIZE.value) #Size of next creature
+		self._add_input_node(InputNodeType.OTHER_CREATURE_ENERGY.value) #Enerngy of next creature
+		self._add_input_node(InputNodeType.OTHER_CREATURE_FOUND_STATUS.value) #Next creature found status
 
 		#Food related input
-		self._add_input_node(InputNodeType.FOOD_ANGLE) #Angle to next creature
-		self._add_input_node(InputNodeType.FOOD_ANGLE) #Distance to next creature
-		self._add_input_node(InputNodeType.FOOD_FOUND_STATUS) #Food found status
+		self._add_input_node(InputNodeType.FOOD_ANGLE.value) #Angle to next creature
+		self._add_input_node(InputNodeType.FOOD_DISTANCE.value) #Distance to next creature
+		self._add_input_node(InputNodeType.FOOD_FOUND_STATUS.value) #Food found status
 
 		#Self related input
-		self._add_input_node(InputNodeType.SELF_ENERNGY) #Energy
-		self._add_input_node(InputNodeType.SELF_SIZE) #Size
-		self._add_input_node(InputNodeType.SELF_SPEED) #Speed
+		self._add_input_node(InputNodeType.SELF_ENERNGY.value) #Energy
+		self._add_input_node(InputNodeType.SELF_SIZE.value) #Size
+		self._add_input_node(InputNodeType.SELF_SPEED.value) #Speed
 
 		#------------------------------------------------------------------
 		#OUTPUT NODES
 		#------------------------------------------------------------------
 		#Movement related input
-		self._add_output_node(OutputNodeType.MOVE_STATUS) #Move status output
-		self._add_output_node(OutputNodeType.MOVE_ANGLE) #Move angle output
-		self._add_output_node(OutputNodeType.MOVE_SPEED) #Move speed output
+		self._add_output_node(OutputNodeType.MOVE_STATUS.value) #Move status output
+		self._add_output_node(OutputNodeType.MOVE_ANGLE.value) #Move angle output
+		self._add_output_node(OutputNodeType.MOVE_SPEED.value) #Move speed output
 
 		#Eating related input
-		self._add_output_node(OutputNodeType.EAT_STATUS) #Eat status output
+		self._add_output_node(OutputNodeType.EAT_STATUS.value) #Eat status output
 
 		#Reproduction related input
-		self._add_output_node(OutputNodeType.REPRODUCE_STATUS) #Reproduce status output
+		self._add_output_node(OutputNodeType.REPRODUCE_STATUS.value) #Reproduce status output
 
 		self.__set_up_genes()
 
@@ -150,3 +150,44 @@ class SmartCreature(Creature):
 
 		self.mutator = copy.deepcopy(other.mutator)
 		self.brain = copy.deepcopy(other.brain)
+
+	def move(self):
+		dist_food = self._find_food()
+		dist_enemy = self._find_enemy()
+
+		self.__set_brain(dist_food, dist_enemy)
+
+	def __set_brain(self, dist_food, dist_enemy):
+		self.__set_brain_with_other_creature_info(dist_enemy)
+		self.__set_brain_with_food_indof(dist_food)
+
+		for blubb in self.brain.nodes.items():
+			print(blubb)
+			#print(key)
+			#print(node)
+
+		raise Exception
+
+	def __set_brain_with_other_creature_info(self, dist_enemy):
+		if dist_enemy[1]:
+			self.brain.nodes[InputNodeType.OTHER_CREATURE_ANGLE.value].value = 1
+			self.brain.nodes[InputNodeType.OTHER_CREATURE_DISTANCE.value].value = 1
+			self.brain.nodes[InputNodeType.OTHER_CREATURE_SIZE.value].value = 1
+			self.brain.nodes[InputNodeType.OTHER_CREATURE_ENERGY.value].value = 1
+			self.brain.nodes[InputNodeType.OTHER_CREATURE_FOUND_STATUS.value].value = 1
+		else:
+			self.brain.nodes[InputNodeType.OTHER_CREATURE_ANGLE.value].value = 0
+			self.brain.nodes[InputNodeType.OTHER_CREATURE_DISTANCE.value].value = 0
+			self.brain.nodes[InputNodeType.OTHER_CREATURE_SIZE.value].value = 0
+			self.brain.nodes[InputNodeType.OTHER_CREATURE_ENERGY.value].value = 0
+			self.brain.nodes[InputNodeType.OTHER_CREATURE_FOUND_STATUS.value].value = 0
+
+	def __set_brain_with_food_indof(self, dist_food):
+		if dist_food[1]:
+			self.brain.nodes[InputNodeType.FOOD_ANGLE.value].value = 1
+			self.brain.nodes[InputNodeType.FOOD_DISTANCE.value].value = 1
+			self.brain.nodes[InputNodeType.FOOD_FOUND_STATUS.value].value = 1
+		else:
+			self.brain.nodes[InputNodeType.FOOD_ANGLE.value].value = 0
+			self.brain.nodes[InputNodeType.FOOD_DISTANCE.value].value = 0
+			self.brain.nodes[InputNodeType.FOOD_FOUND_STATUS.value].value = 0
