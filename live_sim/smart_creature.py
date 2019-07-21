@@ -37,19 +37,42 @@ class Brain(Network):
 		"""
 		super().__init__()
 
-		self._add_input_node(1)
-		self._add_input_node(2)
+		node_id = 0
 
-		self._add_output_node(3)
+		#Other creature related input
+		node_id = self.__add_input_node(node_id) #Angle to next creature
+		node_id = self.__add_input_node(node_id) #Distance to next creature
+
+		node_id = self.__add_output_node(node_id)
 
 		self.__set_up_genes()
 
 	def __set_up_genes(self):
-		gene1 = Gene(in_node = 0, out_node = 3, weight = 10 - 20.0*random.random(), enabled = True)
-		gene2 = Gene(in_node = 1, out_node = 3, weight = 10 - 20.0*random.random(), enabled = True)
-		gene3 = Gene(in_node = 2, out_node = 3, weight = 10 - 20.0*random.random(), enabled = True)
+		bias_node_id = 0
+		genes = []
 
-		self.set_genes([gene1, gene2, gene3])
+		for in_node_id in self.input_node_ids:
+			for out_node_id in self.output_node_ids:
+				gene1 = Gene(in_node = in_node_id, out_node = out_node_id, weight = self.__get_random_weight(), enabled = True)
+				gene2 = Gene(in_node = bias_node_id, out_node = out_node_id, weight = self.__get_random_weight(), enabled = True)
+				
+				genes.append(gene1)
+				genes.append(gene2)
+
+		self.set_genes(genes)
+
+	def __get_random_weight(self):
+		return  10 - 20.0*random.random()
+
+	def __add_input_node(self, node_id):
+		self._add_input_node(node_id)
+
+		return node_id + 1
+
+	def __add_output_node(self, node_id):
+		self._add_output_node(node_id)
+
+		return node_id + 1
 
 class Mutator(NEAT):
 	def __init__(self):
