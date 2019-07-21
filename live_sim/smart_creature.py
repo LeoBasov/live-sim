@@ -204,6 +204,9 @@ class SmartCreature(Creature):
 			input_values.append((0, InputNodeType.FOOD_FOUND_STATUS.value))
 
 	def __get_angle(self, dist_other):
-		vec = (dist_other[1].position - self.position)/dist_other[0]
+		vec = 0
+
+		if dist_other[0] > 0:
+			vec = (dist_other[1].position - self.position)/dist_other[0]
 
 		return math.sin(vec[0])
