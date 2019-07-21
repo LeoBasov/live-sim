@@ -24,6 +24,8 @@ from neat.network import Gene
 from neat.network import Network
 from neat.neat import NEAT
 
+from .creature import Creature
+
 class Brain(Network):
 	"""This is the brain of of the new creature typ
 
@@ -105,5 +107,19 @@ class Mutator(NEAT):
 	def __init__(self):
 		super().__init__()
 
-class SmartCreature:
-	pass
+		self.new_node_prob = 0.01
+		self.new_connection_prob = 0.2
+		self.set_new_weight_prob = 0.31
+		self.new_activation_status_prob = 0.33
+		self.modify_weight_prob = 0.5
+		self.max_network_size = 30
+
+		self.weight_modification_variation = 0.1
+		self.weight_setting_variation = 10.0
+
+class SmartCreature(Creature):
+	def __init__(self, world):
+		super().__init__(world)
+
+		self.mutator = Mutator()
+		self.brain = Brain()
