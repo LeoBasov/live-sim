@@ -19,6 +19,7 @@ import random
 from enum import Enum
 import copy
 import math
+import numpy as np
 
 sys.path.append('../../neat-python/.')
 
@@ -157,10 +158,18 @@ class SmartCreature(Creature):
 		dist_enemy = self._find_enemy()
 		input_values = self.__set_up_brain_input_values(dist_food, dist_enemy)
 
-		self.brain.execute(input_values)
+		ret_vals = self.brain.execute(input_values)
+		self.__process_output(ret_vals)
 
-	def __process_output(self):
-		pass
+	def __process_output(self, ret_vals):
+		if ret_vals[OutputNodeType.MOVE_STATUS.value] > 0.5:
+			self.__get_new_position(ret_vals[OutputNodeType.MOVE_ANGLE.value], ret_vals[OutputNodeType.MOVE_SPEED.value]) 
+
+	def __get_new_position(self, angle, speed):
+		dist_vec = self.position = np.array([math.sin(angle), math.cos(angle), 0.0])
+		dist_vec *= speed*self.speed
+
+		self.position += dist_vec
 
 	def __set_up_brain_input_values(self, dist_food, dist_enemy):
 		input_values = []
