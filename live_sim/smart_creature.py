@@ -187,8 +187,7 @@ class SmartCreature(Creature):
 			self.energy += dist_enemy[1].be_consumed()
 
 	def __process_output(self, ret_vals):
-		if ret_vals[self.brain.OUTPUT_MOVE_STATUS] > 0.5:
-			self.__get_new_position(ret_vals[self.brain.OUTPUT_MOVE_ANGLE], ret_vals[self.brain.OUTPUT_MOVE_SPEED])
+		self.__get_new_position(2.0*math.pi*ret_vals[self.brain.OUTPUT_MOVE_ANGLE], ret_vals[self.brain.OUTPUT_MOVE_SPEED])
 
 	def __get_new_position(self, angle, speed):
 		dist_vec = np.array([math.sin(angle), math.cos(angle), 0.0])
