@@ -24,7 +24,7 @@ import numpy as np
 sys.path.append('../../neat-python/.')
 
 from neat.network import Node
-from neat.network import Gene
+from neat.genome import Gene
 from neat.network import Network
 from neat.neat import NEAT
 
@@ -163,7 +163,7 @@ class SmartCreature(Creature):
 
 	def __process_output(self, ret_vals):
 		if ret_vals[OutputNodeType.MOVE_STATUS.value] > 0.5:
-			self.__get_new_position(ret_vals[OutputNodeType.MOVE_ANGLE.value], ret_vals[OutputNodeType.MOVE_SPEED.value]) 
+			self.__get_new_position(ret_vals[OutputNodeType.MOVE_ANGLE.value], ret_vals[OutputNodeType.MOVE_SPEED.value])
 
 	def __get_new_position(self, angle, speed):
 		dist_vec = self.position = np.array([math.sin(angle), math.cos(angle), 0.0])

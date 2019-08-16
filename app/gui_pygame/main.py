@@ -8,7 +8,7 @@ sys.path.append('../../.')
 sys.path.append('../../../neat-python/.')
 
 from neat.network import Node
-from neat.network import Gene
+from neat.genome import Gene
 from neat.network import Network
 from neat.neat import NEAT
 
@@ -32,7 +32,7 @@ def main():
 	fps_clock = pygame.time.Clock()
 	DISPLAYSURF = pygame.display.set_mode((850, 850), 0, 32)
 	pygame.display.set_caption('Live Sim')
-	
+
 	wrld = World()
 
 	creature_number = 10
