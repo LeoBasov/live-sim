@@ -110,6 +110,8 @@ class Brain(Network):
 
 	def __set_up_genes(self, genome):
 		bias_node_id = 0
+		number_hidden_nodes = 5
+		number_genes = 50
 		genes = []
 
 		for out_node_id in self.output_node_ids:
@@ -120,7 +122,9 @@ class Brain(Network):
 			gene = Gene(in_node = bias_node_id, out_node = out_node_id, weight = self.__get_random_weight(), enabled = True)
 			genes.append(gene)
 
+		genome.allocate_hidden_nodes(number_hidden_nodes)
 		genome.set_genes(genes)
+		genome.allocate_genes(number_genes)
 
 		self.set_up(genome)
 
