@@ -31,6 +31,7 @@ from neat.neat import NEAT
 from neat.neat import Mutator
 
 from .creature import Creature
+from .creature import BASE_ENERGY
 
 class Brain(Network):
 	"""This is the brain of of the new creature typ
@@ -239,3 +240,27 @@ class SmartCreature(Creature):
 			vec = (dist_other[1].position - self.position)/dist_other[0]
 
 		return math.sin(vec[0])
+
+	def _repoduce(self):
+		if self.energy > (self.energy_init + self.energy_init * self.reproduction_threshold):
+			self.energy *= 0.5
+
+			creature = SmartCreature(self.world)
+
+			creature.copy(self)
+
+			self._mutate(creature)
+			self._reproduce_position(creature)
+
+			creature.energy_init = creature.size*creature.size*creature.size*BASE_ENERGY
+			creature.energy = creature.energy_init
+
+			self.children.append(creature)
+			self.world.creatures.append(creature)
+
+	def _mutate(self, creature):
+		self._mutate_speed(creature)
+		self._mutate_sense(creature)
+		self._mutate_size(creature)
+
+		self.mutator.mutate(creature.brain)
