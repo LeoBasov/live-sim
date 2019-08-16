@@ -25,40 +25,11 @@ sys.path.append('../../neat-python/.')
 
 from neat.network import Node
 from neat.genome import Gene
+from neat.genome import Genome
 from neat.network import Network
 from neat.neat import NEAT
 
 from .creature import Creature
-
-class InputNodeType(Enum):
-	#Other creature related input
-	OTHER_CREATURE_ANGLE = 1
-	OTHER_CREATURE_DISTANCE = 2
-	OTHER_CREATURE_SIZE = 3
-	OTHER_CREATURE_ENERGY = 4
-	OTHER_CREATURE_FOUND_STATUS = 5
-
-	#Food related input
-	FOOD_ANGLE = 6
-	FOOD_DISTANCE = 7
-	FOOD_FOUND_STATUS = 8
-
-	#Self related input
-	SELF_ENERNGY = 9
-	SELF_SIZE = 10
-	SELF_SPEED = 11
-
-class OutputNodeType(Enum):
-	#Movement related input
-	MOVE_STATUS = 12 #Move status output
-	MOVE_ANGLE = 13 #Move angle output
-	MOVE_SPEED = 14 #Move speed output
-
-	#Eating related input
-	EAT_STATUS = 15 #Eat status output
-
-	#Reproduction related input
-	REPRODUCE_STATUS = 16 #Reproduce status output
 
 class Brain(Network):
 	"""This is the brain of of the new creature typ
@@ -72,44 +43,71 @@ class Brain(Network):
 		"""
 		"""
 		super().__init__()
+		#Inputs
+		self.INPUT_OTHER_CREATURE_ANGLE = 0
+		self.INPUT_OTHER_CREATURE_DISTANCE = 0
+		self.INPUT_OTHER_CREATURE_SIZE = 0
+		self.INPUT_OTHER_CREATURE_ENERGY = 0
+		self.INPUT_OTHER_CREATURE_FOUND_STATUS = 0
+
+		self.INPUT_FOOD_ANGLE = 0
+		self.INPUT_FOOD_DISTANCE = 0
+		self.INPUT_FOOD_FOUND_STATUS = 0
+
+		self.INPUT_SELF_ENERNGY = 9
+		self.INPUT_SELF_SIZE = 10
+		self.INPUT_SELF_SPEED = 11
+
+		#Movement related output
+		self.OUTPUT_MOVE_STATUS = 12 #Move status output
+		self.OUTPUT_MOVE_ANGLE = 13 #Move angle output
+		self.OUTPUT_MOVE_SPEED = 14 #Move speed output
+
+		#Eating related output
+		self.OUTPUT_EAT_STATUS = 15 #Eat status output
+
+		#Reproduction related output
+		self.OUTPUT_REPRODUCE_STATUS = 16 #Reproduce status output
+
+		genome = Genome()
 
 		#------------------------------------------------------------------
 		#INPUT NODES
 		#------------------------------------------------------------------
 		#Other creature related input
-		self._add_input_node(InputNodeType.OTHER_CREATURE_ANGLE.value) #Angle to next creature
-		self._add_input_node(InputNodeType.OTHER_CREATURE_DISTANCE.value) #Distance to next creature
-		self._add_input_node(InputNodeType.OTHER_CREATURE_SIZE.value) #Size of next creature
-		self._add_input_node(InputNodeType.OTHER_CREATURE_ENERGY.value) #Enerngy of next creature
-		self._add_input_node(InputNodeType.OTHER_CREATURE_FOUND_STATUS.value) #Next creature found status
+		self.INPUT_OTHER_CREATURE_ANGLE = genome.add_input_node() #Angle to next creature
+		self.INPUT_OTHER_CREATURE_DISTANCE = genome.add_input_node() #Distance to next creature
+		self.INPUT_OTHER_CREATURE_SIZE = genome.add_input_node() #Size of next creature
+		self.INPUT_OTHER_CREATURE_ENERGY = genome.add_input_node() #Enerngy of next creature
+		self.INPUT_OTHER_CREATURE_FOUND_STATUS = genome.add_input_node() #Next creature found status
 
 		#Food related input
-		self._add_input_node(InputNodeType.FOOD_ANGLE.value) #Angle to next creature
-		self._add_input_node(InputNodeType.FOOD_DISTANCE.value) #Distance to next creature
-		self._add_input_node(InputNodeType.FOOD_FOUND_STATUS.value) #Food found status
+		self.INPUT_FOOD_ANGLE = genome.add_input_node() #Angle to next creature
+		self.INPUT_FOOD_DISTANCE = genome.add_input_node() #Distance to next creature
+		self.INPUT_FOOD_FOUND_STATUS = genome.add_input_node() #Food found status
 
 		#Self related input
-		self._add_input_node(InputNodeType.SELF_ENERNGY.value) #Energy
-		self._add_input_node(InputNodeType.SELF_SIZE.value) #Size
-		self._add_input_node(InputNodeType.SELF_SPEED.value) #Speed
+		self.INPUT_SELF_ENERNGY = genome.add_input_node() #Energy
+		self.INPUT_SELF_SIZE = genome.add_input_node() #Size
+		self.INPUT_SELF_SPEED = genome.add_input_node() #Speed
 
 		#------------------------------------------------------------------
 		#OUTPUT NODES
 		#------------------------------------------------------------------
 		#Movement related input
-		self._add_output_node(OutputNodeType.MOVE_STATUS.value) #Move status output
-		self._add_output_node(OutputNodeType.MOVE_ANGLE.value) #Move angle output
-		self._add_output_node(OutputNodeType.MOVE_SPEED.value) #Move speed output
+		self.OUTPUT_MOVE_STATUS = genome.add_output_node() #Move status output
+		self.OUTPUT_MOVE_ANGLE = genome.add_output_node() #Move angle output
+		self.OUTPUT_MOVE_SPEED = genome.add_output_node() #Move speed output
 
 		#Eating related input
-		self._add_output_node(OutputNodeType.EAT_STATUS.value) #Eat status output
+		self.OUTPUT_EAT_STATUS = genome.add_output_node() #Eat status output
 
 		#Reproduction related input
-		self._add_output_node(OutputNodeType.REPRODUCE_STATUS.value) #Reproduce status output
+		self.OUTPUT_REPRODUCE_STATUS = genome.add_output_node() #Reproduce status output
 
-		self.__set_up_genes()
+		self.__set_up_genes(genome)
 
-	def __set_up_genes(self):
+	def __set_up_genes(self, genome):
 		bias_node_id = 0
 		genes = []
 
@@ -121,7 +119,9 @@ class Brain(Network):
 			gene = Gene(in_node = bias_node_id, out_node = out_node_id, weight = self.__get_random_weight(), enabled = True)
 			genes.append(gene)
 
-		self.set_genes(genes)
+		genome.set_genes(genes)
+
+		self.set_up(genome)
 
 	def __get_random_weight(self):
 		return  10 - 20.0*random.random()
@@ -147,7 +147,7 @@ class SmartCreature(Creature):
 		self.mutator = Mutator()
 		self.brain = Brain()
 
-	def copy(self, other):
+	"""def copy(self, other):
 		super().copy(other)
 
 		self.mutator = copy.deepcopy(other.mutator)
@@ -209,4 +209,4 @@ class SmartCreature(Creature):
 		if dist_other[0] > 0:
 			vec = (dist_other[1].position - self.position)/dist_other[0]
 
-		return math.sin(vec[0])
+		return math.sin(vec[0])"""
