@@ -179,6 +179,12 @@ class SmartCreature(Creature):
 		ret_vals = self.brain.execute(input_values)
 		self.__process_output(ret_vals)
 
+		if dist_food[1] != None and dist_food[0] < 0.5*self.size:
+			self.energy += dist_food[1].be_consumed()
+
+		if dist_enemy[1] != None and self.size > 1.2*dist_enemy[1].size and dist_enemy[0] < 0.5*self.size:
+			self.energy += dist_enemy[1].be_consumed()
+
 	def __process_output(self, ret_vals):
 		if ret_vals[self.brain.OUTPUT_MOVE_STATUS] > 0.5:
 			self.__get_new_position(ret_vals[self.brain.OUTPUT_MOVE_ANGLE], ret_vals[self.brain.OUTPUT_MOVE_SPEED])
@@ -187,7 +193,12 @@ class SmartCreature(Creature):
 		dist_vec = np.array([math.sin(angle), math.cos(angle), 0.0])
 		dist_vec *= speed*self.speed
 
-		self.position += dist_vec
+		position_new = self.position + dist_vec
+
+		if self.world.collision(position_new):
+			self.position =  self._random_move()
+		else:
+			self.position = position_new
 
 	def __set_up_brain_input_values(self, dist_food, dist_enemy):
 		input_values = []
