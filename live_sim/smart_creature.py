@@ -142,19 +142,21 @@ class SmartCreature(Creature):
 		super().copy(other)
 
 		self.mutator = copy.deepcopy(other.mutator)
-		self.brain = copy.deepcopy(other.brain)
+		self.brain = copy.deepcopy(other.brain)"""
 
 	def move(self):
+		super().move()
+
 		dist_food = self._find_food()
 		dist_enemy = self._find_enemy()
 		input_values = self.__set_up_brain_input_values(dist_food, dist_enemy)
 
-		ret_vals = self.brain.execute(input_values)
+		"""ret_vals = self.brain.execute(input_values)
 		self.__process_output(ret_vals)
 
 	def __process_output(self, ret_vals):
 		if ret_vals[OutputNodeType.MOVE_STATUS.value] > 0.5:
-			self.__get_new_position(ret_vals[OutputNodeType.MOVE_ANGLE.value], ret_vals[OutputNodeType.MOVE_SPEED.value])
+			self.__get_new_position(ret_vals[OutputNodeType.MOVE_ANGLE.value], ret_vals[OutputNodeType.MOVE_SPEED.value])"""
 
 	def __get_new_position(self, angle, speed):
 		dist_vec = self.position = np.array([math.sin(angle), math.cos(angle), 0.0])
@@ -172,32 +174,32 @@ class SmartCreature(Creature):
 
 	def __set_brain_with_other_creature_input_values(self, input_values, dist_enemy):
 		if dist_enemy[1]:
-			input_values.append((self.__get_angle(dist_enemy), InputNodeType.OTHER_CREATURE_ANGLE.value))
-			input_values.append((dist_enemy[0], InputNodeType.OTHER_CREATURE_DISTANCE.value))
-			input_values.append((dist_enemy[1].size, InputNodeType.OTHER_CREATURE_SIZE.value))
-			input_values.append((dist_enemy[1].energy, InputNodeType.OTHER_CREATURE_ENERGY.value))
-			input_values.append((1, InputNodeType.OTHER_CREATURE_FOUND_STATUS.value))
+			input_values.append((self.__get_angle(dist_enemy), self.brain.INPUT_OTHER_CREATURE_ANGLE))
+			input_values.append((dist_enemy[0], self.brain.INPUT_OTHER_CREATURE_DISTANCE))
+			input_values.append((dist_enemy[1].size, self.brain.INPUT_OTHER_CREATURE_SIZE))
+			input_values.append((dist_enemy[1].energy, self.brain.INPUT_OTHER_CREATURE_ENERGY))
+			input_values.append((1, self.brain.INPUT_OTHER_CREATURE_FOUND_STATUS))
 		else:
-			input_values.append((0, InputNodeType.OTHER_CREATURE_ANGLE.value))
-			input_values.append((0, InputNodeType.OTHER_CREATURE_DISTANCE.value))
-			input_values.append((0, InputNodeType.OTHER_CREATURE_SIZE.value))
-			input_values.append((0, InputNodeType.OTHER_CREATURE_ENERGY.value))
-			input_values.append((0, InputNodeType.OTHER_CREATURE_FOUND_STATUS.value))
+			input_values.append((0, self.brain.INPUT_OTHER_CREATURE_ANGLE))
+			input_values.append((0, self.brain.INPUT_OTHER_CREATURE_DISTANCE))
+			input_values.append((0, self.brain.INPUT_OTHER_CREATURE_SIZE))
+			input_values.append((0, self.brain.INPUT_OTHER_CREATURE_ENERGY))
+			input_values.append((0, self.brain.INPUT_OTHER_CREATURE_FOUND_STATUS))
 
 	def __set_brain_with_food_input_values(self, input_values, dist_food):
 		if dist_food[1]:
-			input_values.append((self.__get_angle(dist_food), InputNodeType.FOOD_ANGLE.value))
-			input_values.append((dist_food[0], InputNodeType.FOOD_DISTANCE.value))
-			input_values.append((1, InputNodeType.FOOD_FOUND_STATUS.value))
+			input_values.append((self.__get_angle(dist_food), self.brain.INPUT_FOOD_ANGLE))
+			input_values.append((dist_food[0], self.brain.INPUT_FOOD_DISTANCE))
+			input_values.append((1, self.brain.INPUT_FOOD_FOUND_STATUS))
 		else:
-			input_values.append((0, InputNodeType.FOOD_ANGLE.value))
-			input_values.append((0, InputNodeType.FOOD_DISTANCE.value))
-			input_values.append((0, InputNodeType.FOOD_FOUND_STATUS.value))
+			input_values.append((0, self.brain.INPUT_FOOD_ANGLE))
+			input_values.append((0, self.brain.INPUT_FOOD_DISTANCE))
+			input_values.append((0, self.brain.INPUT_FOOD_FOUND_STATUS))
 
 	def __get_angle(self, dist_other):
-		vec = 0
+		vec = np.array([0, 0, 0])
 
 		if dist_other[0] > 0:
 			vec = (dist_other[1].position - self.position)/dist_other[0]
 
-		return math.sin(vec[0])"""
+		return math.sin(vec[0])
