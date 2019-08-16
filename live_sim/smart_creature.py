@@ -169,8 +169,8 @@ class SmartCreature(Creature):
 		self.mutator = copy.deepcopy(other.mutator)
 		self.brain = copy.deepcopy(other.brain)
 
-	def move(self):
-		super().move()
+	def _move(self):
+		#super()._move()
 
 		dist_food = self._find_food()
 		dist_enemy = self._find_enemy()
@@ -184,10 +184,10 @@ class SmartCreature(Creature):
 			self.__get_new_position(ret_vals[self.brain.OUTPUT_MOVE_ANGLE], ret_vals[self.brain.OUTPUT_MOVE_SPEED])
 
 	def __get_new_position(self, angle, speed):
-		dist_vec = self.position = np.array([math.sin(angle), math.cos(angle), 0.0])
+		dist_vec = np.array([math.sin(angle), math.cos(angle), 0.0])
 		dist_vec *= speed*self.speed
 
-		#self.position += dist_vec
+		self.position += dist_vec
 
 	def __set_up_brain_input_values(self, dist_food, dist_enemy):
 		input_values = []
