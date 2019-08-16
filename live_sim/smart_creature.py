@@ -138,11 +138,11 @@ class SmartCreature(Creature):
 		self.mutator = Mutator()
 		self.brain = Brain()
 
-	"""def copy(self, other):
+	def copy(self, other):
 		super().copy(other)
 
 		self.mutator = copy.deepcopy(other.mutator)
-		self.brain = copy.deepcopy(other.brain)"""
+		self.brain = copy.deepcopy(other.brain)
 
 	def move(self):
 		super().move()
