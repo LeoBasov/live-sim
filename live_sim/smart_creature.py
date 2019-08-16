@@ -44,6 +44,9 @@ class Brain(Network):
 		"""
 		"""
 		super().__init__()
+		self.created_output_node_ids = []
+		self.created_input_node_ids = []
+
 		#Inputs
 		self.INPUT_OTHER_CREATURE_ANGLE = 0
 		self.INPUT_OTHER_CREATURE_DISTANCE = 0
@@ -82,15 +85,29 @@ class Brain(Network):
 		self.INPUT_OTHER_CREATURE_ENERGY = genome.add_input_node() #Enerngy of next creature
 		self.INPUT_OTHER_CREATURE_FOUND_STATUS = genome.add_input_node() #Next creature found status
 
+		self.created_input_node_ids.append(self.INPUT_OTHER_CREATURE_ANGLE)
+		self.created_input_node_ids.append(self.INPUT_OTHER_CREATURE_DISTANCE)
+		self.created_input_node_ids.append(self.INPUT_OTHER_CREATURE_SIZE)
+		self.created_input_node_ids.append(self.INPUT_OTHER_CREATURE_ENERGY)
+		self.created_input_node_ids.append(self.INPUT_OTHER_CREATURE_FOUND_STATUS)
+
 		#Food related input
 		self.INPUT_FOOD_ANGLE = genome.add_input_node() #Angle to next creature
 		self.INPUT_FOOD_DISTANCE = genome.add_input_node() #Distance to next creature
 		self.INPUT_FOOD_FOUND_STATUS = genome.add_input_node() #Food found status
 
+		self.created_input_node_ids.append(self.INPUT_FOOD_ANGLE)
+		self.created_input_node_ids.append(self.INPUT_FOOD_DISTANCE)
+		self.created_input_node_ids.append(self.INPUT_FOOD_FOUND_STATUS)
+
 		#Self related input
 		self.INPUT_SELF_ENERNGY = genome.add_input_node() #Energy
 		self.INPUT_SELF_SIZE = genome.add_input_node() #Size
 		self.INPUT_SELF_SPEED = genome.add_input_node() #Speed
+
+		self.created_input_node_ids.append(self.INPUT_SELF_ENERNGY)
+		self.created_input_node_ids.append(self.INPUT_SELF_SIZE)
+		self.created_input_node_ids.append(self.INPUT_SELF_SPEED)
 
 		#------------------------------------------------------------------
 		#OUTPUT NODES
@@ -100,11 +117,19 @@ class Brain(Network):
 		self.OUTPUT_MOVE_ANGLE = genome.add_output_node() #Move angle output
 		self.OUTPUT_MOVE_SPEED = genome.add_output_node() #Move speed output
 
+		self.created_output_node_ids.append(self.OUTPUT_MOVE_STATUS)
+		self.created_output_node_ids.append(self.OUTPUT_MOVE_ANGLE)
+		self.created_output_node_ids.append(self.OUTPUT_MOVE_SPEED)
+
 		#Eating related input
 		self.OUTPUT_EAT_STATUS = genome.add_output_node() #Eat status output
 
+		self.created_output_node_ids.append(self.OUTPUT_EAT_STATUS)
+
 		#Reproduction related input
 		self.OUTPUT_REPRODUCE_STATUS = genome.add_output_node() #Reproduce status output
+
+		self.created_output_node_ids.append(self.OUTPUT_REPRODUCE_STATUS)
 
 		self.__set_up_genes(genome)
 
@@ -114,12 +139,12 @@ class Brain(Network):
 		number_genes = 50
 		genes = []
 
-		for out_node_id in self.output_node_ids:
-			for in_node_id in self.input_node_ids:
-				gene = Gene(in_node = in_node_id, out_node = out_node_id, weight = self.__get_random_weight(), enabled = True)
+		for out_node_id in self.created_output_node_ids:
+			for in_node_id in self.created_input_node_ids:
+				gene = Gene(in_node_id = in_node_id, out_node_id = out_node_id, weight = self.__get_random_weight(), enabled = True)
 				genes.append(gene)
 
-			gene = Gene(in_node = bias_node_id, out_node = out_node_id, weight = self.__get_random_weight(), enabled = True)
+			gene = Gene(in_node_id = bias_node_id, out_node_id = out_node_id, weight = self.__get_random_weight(), enabled = True)
 			genes.append(gene)
 
 		genome.allocate_hidden_nodes(number_hidden_nodes)
